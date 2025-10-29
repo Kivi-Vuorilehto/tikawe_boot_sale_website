@@ -3,7 +3,28 @@
 
 
 <h1>Test index</h1>
-<p>Home pagina</p>
 
+{% if listings %}
+<div class="listings">
+    {% for listing in listings %}
+        <div class="listing">
+            {% if listing['images'] and listing['images']|length > 0 %}
+                <img src="{{ url_for('static', filename='uploads/' ~ listing['images'][0]['image_url']) }}" 
+                     alt="Listing image" class="listing-thumbnail">
+            {% else %}
+                <div class="listing-thumbnail placeholder">No image</div>
+            {% endif %}
+            <h3>{{ listing['title'] }}</h3>
+            <p>{{ listing['description'] }}</p>
+            <p><strong>Price:</strong> ${{ listing['price'] }}</p>
+            <p><strong>Category:</strong> {{ listing['category'] }}</p>
+            <p><strong>Location:</strong> {{ listing['location'] }}</p>
+            <p><strong>Created:</strong> {{ listing['time_stamp'] }}</p>
+        </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>No listings yet.</p>
+{% endif %}
 
 {% endblock %}
