@@ -1,21 +1,21 @@
 {% extends "base.html" %}
 {% block content %}
 
+<div class="form-container">
+    <h2>Login</h1>
 
-<h1>Login</h1>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
 
-<form action="/login" method="POST">
-    <label for="username">Username</label><br>
-    <input type="text" id="username" name="username" placeholder="Enter username" required><br><br>
+    <form action="{{ url_for('login') }}" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" placeholder="Enter username" required><br>
 
-    <label for="password">Password</label><br>
-    <input type="password" id="password" name="password" placeholder="Enter password" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" placeholder="Enter password" required><br>
 
-    <button type="submit">Login</button>
-</form>
-
-{% if error %}
-    <p style="color: red;">{{ error }}</p>
-{% endif %}
-
+        <button type="submit">Login</button>
+    </form>
+</div>
 {% endblock %}
