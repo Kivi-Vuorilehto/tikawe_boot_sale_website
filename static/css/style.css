@@ -100,6 +100,13 @@ h2 { font-size: 1.4rem; }
 h3 { font-size: 1.1rem; }
 h4 { font-size: 1rem; }
 
+.empty-message {
+    margin: 20px 0;
+    text-align: center;
+    font-style: italic;
+    color: var(--muted);
+}
+
 
 .listings, .listings-container {
   display: flex;

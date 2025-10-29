@@ -12,6 +12,9 @@ app.secret_key = config.secret_key
 
 db.init_database()
 
+def format_time(time_string):
+    return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
+
 @app.route("/")
 def index():
     all_listings = listings.get_listings()
@@ -19,7 +22,7 @@ def index():
     listings_with_images = []
     for l in all_listings:
         listing_dict = dict(l)
-        listing_dict['images'] = listings.get_listing_images(listing_dict['listing_id'])
+        listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
 
     return render_template("index.html", listings=listings_with_images)
@@ -46,7 +49,7 @@ def add_comment(listing_id):
         listing_id=listing_id,
         sender_id=session["user_id"],
         comment_text=comment_text,
-        time_stamp=datetime.now(timezone.utc)
+        time_stamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     )
 
     return redirect(url_for("show_listing", listing_id=listing_id))
@@ -84,7 +87,7 @@ def register():
             return render_template("register.html", error="Passwords must match.",
                                    title="Register")
 
-        time_stamp = datetime.now(timezone.utc)
+        time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
         users.create_user(username, password, time_stamp)
         return redirect(url_for("login"))
     return render_template("register.html", title="Register")
@@ -108,7 +111,7 @@ def other_profile(profile_id):
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)
-        listing_dict['images'] = listings.get_listing_images(listing_dict['listing_id'])
+        listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
     return render_template("profile.html", title="Account", profile_id=profile_id,
                            username=username, time_stamp=time_stamp, listings=listings_with_images)
@@ -125,7 +128,7 @@ def profile():
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)
-        listing_dict['images'] = listings.get_listing_images(listing_dict['listing_id'])
+        listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
     
     return render_template("profile.html", title="Account", profile_id=profile_id,
@@ -157,7 +160,7 @@ def create_listing():
             price=float(price),
             category=category,
             location=location,
-            time_stamp=datetime.now(timezone.utc)
+            time_stamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
         )
 
         for img in images:
@@ -181,7 +184,7 @@ def delete_listing(listing_id):
     if not listing:
         abort(404)
 
-    if listing['user_id'] != session["user_id"]:
+    if listing["user_id"] != session["user_id"]:
         abort(403)
 
     listings.delete_listing(listing_id)
