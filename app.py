@@ -17,7 +17,8 @@ def format_time(time_string):
 
 @app.route("/")
 def index():
-    all_listings = listings.get_listings()
+    search = request.args.get("search")
+    all_listings = listings.get_listings(search=search)
 
     listings_with_images = []
     for l in all_listings:
@@ -123,8 +124,8 @@ def profile():
 
     profile_id = session["user_id"]
     username, time_stamp = users.get_profile_info(profile_id)
-    user_listings = listings.get_user_listings(profile_id)
-
+    search = request.args.get("search")
+    user_listings = listings.get_listings(search=search)
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)

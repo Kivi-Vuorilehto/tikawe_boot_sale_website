@@ -8,8 +8,12 @@
     {% if session.get("user_id") == profile_id %}
         <a href="{{ url_for('create_listing') }}" class="btn">Create New Listing</a>
     {% endif %}
-
     <h2>Listings</h2><br>
+
+    <form method="get" action="{{ url_for('profile', profile_id=profile_id) }}" class="search-form">
+        <input type="text" name="search" placeholder="Filter your listings..." value="{{ request.args.get('search', '') }}">
+        <button type="submit">Search</button>
+    </form>
 
     {% if listings %}
         <div class="listings-container">

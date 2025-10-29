@@ -1,6 +1,11 @@
 {% extends "base.html" %}
 {% block content %}
 
+<form method="get" action="{{ url_for('index') }}" class="search-form">
+    <input type="text" name="search" placeholder="Search listings..." value="{{ request.args.get('search', '') }}">
+    <button type="submit">Search</button>
+</form>
+
 {% if listings %}
 <div class="listings-container">
     {% for listing in listings %}

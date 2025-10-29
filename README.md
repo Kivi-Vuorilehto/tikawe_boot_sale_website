@@ -27,7 +27,7 @@ flask run
 ```bash
 python3 -m venv venv
 venv/Scripts/activate
-$env:FLASK_APP = "app.py"
+pip install flask
 flask run
 ```
 

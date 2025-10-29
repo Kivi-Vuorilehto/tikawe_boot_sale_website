@@ -3,9 +3,19 @@ import os
 import db
 
 IMAGEURL = "static/uploads"
-def get_user_listings(user_id):
-    sql = "SELECT * FROM Listings WHERE user_id = ? AND status = 1 ORDER BY time_stamp DESC"
-    return db.query(sql, [user_id])
+
+def get_user_listings(user_id, category=None, search=None):
+    sql = "SELECT * FROM Listings WHERE user_id = ? AND status = 1"
+    params = [user_id]
+    if category:
+        sql += " AND category = ?"
+        params.append(category)
+    if search:
+        sql += " AND (title LIKE ? OR description LIKE ?)"
+        params.extend([f"%{search}%", f"%{search}%"])
+
+    sql += " ORDER BY time_stamp DESC"
+    return db.query(sql, params)
 
 
 def get_listings(category=None, search=None):
