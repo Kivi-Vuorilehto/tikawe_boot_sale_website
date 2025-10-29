@@ -27,8 +27,29 @@ def index():
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
     listing = listings.get_listing(listing_id)
+    if not listing:
+        abort(404)
     comments = listings.get_comments(listing_id)
-    return render_template("listing.html", listing=listing, comments=comments)
+    listing_images = listings.get_listing_images(listing_id)
+    return render_template("listing.html", listing=listing, comments=comments, listing_images=listing_images, users=users)
+
+@app.route("/listing/<int:listing_id>/comment", methods=["POST"])
+def add_comment(listing_id):
+    if "user_id" not in session:
+        return redirect(url_for("login"))
+
+    comment_text = request.form["comment_text"].strip()
+    if not comment_text:
+        return redirect(url_for("show_listing", listing_id=listing_id))
+
+    listings.add_comment(
+        listing_id=listing_id,
+        sender_id=session["user_id"],
+        comment_text=comment_text,
+        time_stamp=datetime.now(timezone.utc)
+    )
+
+    return redirect(url_for("show_listing", listing_id=listing_id))
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -81,9 +102,16 @@ def other_profile(profile_id):
     username, time_stamp = users.get_profile_info(profile_id)
     if username is None:
         abort(404)
+
     user_listings = listings.get_user_listings(profile_id)
+
+    listings_with_images = []
+    for l in user_listings:
+        listing_dict = dict(l)
+        listing_dict['images'] = listings.get_listing_images(listing_dict['listing_id'])
+        listings_with_images.append(listing_dict)
     return render_template("profile.html", title="Account", profile_id=profile_id,
-                           username=username, time_stamp=time_stamp, listings=user_listings)
+                           username=username, time_stamp=time_stamp, listings=listings_with_images)
 
 @app.route("/profile")
 def profile():
@@ -92,10 +120,16 @@ def profile():
 
     profile_id = session["user_id"]
     username, time_stamp = users.get_profile_info(profile_id)
-
     user_listings = listings.get_user_listings(profile_id)
+
+    listings_with_images = []
+    for l in user_listings:
+        listing_dict = dict(l)
+        listing_dict['images'] = listings.get_listing_images(listing_dict['listing_id'])
+        listings_with_images.append(listing_dict)
+    
     return render_template("profile.html", title="Account", profile_id=profile_id,
-                           username=username, time_stamp=time_stamp, listings=user_listings)
+                           username=username, time_stamp=time_stamp, listings=listings_with_images)
 
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():

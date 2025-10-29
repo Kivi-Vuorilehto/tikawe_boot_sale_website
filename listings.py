@@ -71,7 +71,7 @@ def add_comment(listing_id, sender_id, comment_text, time_stamp=None):
 
 def get_comments(listing_id):
     sql = """
-        SELECT c.comment_id, c.comment_text, c.time_stamp, u.username
+        SELECT c.comment_id, c.comment_text, c.time_stamp, u.username, u.user_id
         FROM Comments c
         JOIN Users u ON c.sender_id = u.user_id
         WHERE c.listing_id = ?
