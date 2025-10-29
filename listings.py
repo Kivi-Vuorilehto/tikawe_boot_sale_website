@@ -4,7 +4,7 @@ import db
 
 IMAGEURL = "static/uploads"
 
-def get_user_listings(user_id, category=None, search=None):
+def get_user_listings(user_id, category=None, search=None, sort=None):
     sql = "SELECT * FROM Listings WHERE user_id = ? AND status = 1"
     params = [user_id]
     if category:
@@ -14,11 +14,19 @@ def get_user_listings(user_id, category=None, search=None):
         sql += " AND (title LIKE ? OR description LIKE ?)"
         params.extend([f"%{search}%", f"%{search}%"])
 
-    sql += " ORDER BY time_stamp DESC"
+    if sort == "time_asc":
+        sql += " ORDER BY time_stamp ASC"
+    elif sort == "price_asc":
+        sql += " ORDER BY price ASC"
+    elif sort == "price_desc":
+        sql += " ORDER BY price DESC"
+    else:
+        sql += " ORDER BY time_stamp DESC"
+        
     return db.query(sql, params)
 
 
-def get_listings(category=None, search=None):
+def get_listings(category=None, search=None, sort=None):
     sql = "SELECT * FROM Listings WHERE status = 1"
     params = []
 
@@ -29,7 +37,15 @@ def get_listings(category=None, search=None):
         sql += " AND (title LIKE ? OR description LIKE ?)"
         params.extend([f"%{search}%", f"%{search}%"])
 
-    sql += " ORDER BY time_stamp DESC"
+    if sort == "time_asc":
+        sql += " ORDER BY time_stamp ASC"
+    elif sort == "price_asc":
+        sql += " ORDER BY price ASC"
+    elif sort == "price_desc":
+        sql += " ORDER BY price DESC"
+    else:
+        sql += " ORDER BY time_stamp DESC"
+
     return db.query(sql, params)
 
 

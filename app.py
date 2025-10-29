@@ -18,7 +18,8 @@ def format_time(time_string):
 @app.route("/")
 def index():
     search = request.args.get("search")
-    all_listings = listings.get_listings(search=search)
+    sort = request.args.get("sort")
+    all_listings = listings.get_listings(search=search, sort=sort)
 
     listings_with_images = []
     for l in all_listings:
@@ -26,7 +27,7 @@ def index():
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
 
-    return render_template("index.html", listings=listings_with_images)
+    return render_template("index.html", listings=listings_with_images, selected_sort=sort)
 
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
@@ -107,7 +108,9 @@ def other_profile(profile_id):
     if username is None:
         abort(404)
 
-    user_listings = listings.get_user_listings(profile_id)
+    search = request.args.get("search")
+    sort = request.args.get("sort")
+    user_listings = listings.get_listings(search=search, sort=sort)
 
     listings_with_images = []
     for l in user_listings:
@@ -115,7 +118,8 @@ def other_profile(profile_id):
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
     return render_template("profile.html", title="Account", profile_id=profile_id,
-                           username=username, time_stamp=time_stamp, listings=listings_with_images)
+                           username=username, time_stamp=time_stamp,
+                           listings=listings_with_images, selected_sort=sort)
 
 @app.route("/profile")
 def profile():
@@ -125,7 +129,8 @@ def profile():
     profile_id = session["user_id"]
     username, time_stamp = users.get_profile_info(profile_id)
     search = request.args.get("search")
-    user_listings = listings.get_listings(search=search)
+    sort = request.args.get("sort")
+    user_listings = listings.get_listings(search=search, sort=sort)
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)
@@ -133,7 +138,8 @@ def profile():
         listings_with_images.append(listing_dict)
     
     return render_template("profile.html", title="Account", profile_id=profile_id,
-                           username=username, time_stamp=time_stamp, listings=listings_with_images)
+                           username=username, time_stamp=time_stamp,
+                           listings=listings_with_images, selected_sort=sort)
 
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():
