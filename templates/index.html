@@ -1,26 +1,25 @@
 {% extends "base.html" %}
 {% block content %}
 
-
-<h1>Test index</h1>
-
 {% if listings %}
-<div class="listings">
+<div class="listings-container">
     {% for listing in listings %}
-        <div class="listing">
-            {% if listing['images'] and listing['images']|length > 0 %}
-                <img src="{{ url_for('static', filename='uploads/' ~ listing['images'][0]['image_url']) }}" 
-                     alt="Listing image" class="listing-thumbnail">
-            {% else %}
-                <div class="listing-thumbnail placeholder">No image</div>
-            {% endif %}
-            <h3>{{ listing['title'] }}</h3>
-            <p>{{ listing['description'] }}</p>
-            <p><strong>Price:</strong> ${{ listing['price'] }}</p>
-            <p><strong>Category:</strong> {{ listing['category'] }}</p>
-            <p><strong>Location:</strong> {{ listing['location'] }}</p>
-            <p><strong>Created:</strong> {{ listing['time_stamp'] }}</p>
-        </div>
+        <a href="{{ url_for('show_listing', listing_id=listing['listing_id']) }}" style="text-decoration: none; color: inherit;">
+            <div class="listing-card">
+                {% if listing['images'] and listing['images']|length > 0 %}
+                    <img src="{{ url_for('static', filename='uploads/' ~ listing['images'][0]['image_url']) }}" 
+                        alt="Listing image" class="listing-thumbnail">
+                {% else %}
+                    <div class="listing-thumbnail placeholder">No image</div>
+                {% endif %}
+                <h3>{{ listing['title'] }}</h3>
+                <p>{{ listing['description'] }}</p>
+                <p><strong>Price:</strong> ${{ listing['price'] }}</p>
+                <p><strong>Category:</strong> {{ listing['category'] }}</p>
+                <p><strong>Location:</strong> {{ listing['location'] }}</p>
+                <p><strong>Created:</strong> {{ listing['time_stamp'] }}</p>
+            </div>
+        </a>
     {% endfor %}
 </div>
 {% else %}
