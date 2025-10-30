@@ -2,9 +2,13 @@ A small website created to pass a basics of web-development and databases course
 
 ### Description
 The website is designed to host adverts for boot sales, garage sales or yard sales. 
-A user can post a listing on the feed which contains images, title, description, category, price and location. Thus others users can look at your items, see where they are sold and go buy them if they wish. 
 
-A user can search the feed by category, price, creator username and title.
+A user can register an account and log in to the site.
+A user can post a listing on the feed which contains images, a title, a description, a category, a price and a location. 
+A feed displays all added listings to all visitors.
+
+A user can filter the feed by category and title.
+A user can sort the feed by price and time.
 
 Comments can also be left on listings with futher questions to the seller.
 
