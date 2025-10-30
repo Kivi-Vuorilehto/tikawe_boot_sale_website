@@ -110,7 +110,7 @@ def other_profile(profile_id):
 
     search = request.args.get("search")
     sort = request.args.get("sort")
-    user_listings = listings.get_listings(search=search, sort=sort)
+    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort)
 
     listings_with_images = []
     for l in user_listings:
@@ -130,7 +130,7 @@ def profile():
     username, time_stamp = users.get_profile_info(profile_id)
     search = request.args.get("search")
     sort = request.args.get("sort")
-    user_listings = listings.get_listings(search=search, sort=sort)
+    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort)
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)
