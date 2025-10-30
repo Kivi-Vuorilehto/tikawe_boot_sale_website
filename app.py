@@ -24,6 +24,25 @@ def allowed_filetype(filename):
 def preserve_newlines(data):
     return Markup("<br>".join(escape(data).split("\n")))
 
+@app.after_request
+def set_secure_headers(response):
+    response.headers['X-Content-Type-Options'] = 'nosniff'
+
+    response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+    response.headers['Referrer-Policy'] = 'no-referrer-when-downgrade'
+
+    response.headers['X-XSS-Protection'] = '1; mode=block'
+
+    csp = (
+        "default-src 'self'; "
+        "img-src 'self' data:; "
+        "script-src 'self'; "
+        "style-src 'self' 'unsafe-inline';"
+    )
+    response.headers['Content-Security-Policy'] = csp
+
+    return response
+
 @app.before_request
 def csrf_protect():
     if request.method == "POST":
