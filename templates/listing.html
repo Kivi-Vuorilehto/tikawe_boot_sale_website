@@ -43,7 +43,7 @@
     <!-- Creator Info -->
     {% set creator_username, _ = users.get_profile_info(listing['user_id']) %}
     <p class="small"><strong>Created by:</strong> 
-        <a href="{{ url_for('other_profile', profile_id=listing['user_id']) }}">
+        <a href="{{ url_for('profile', profile_id=listing['user_id']) }}">
             {{ creator_username }}
         </a>
     </p>
@@ -65,7 +65,7 @@
                 <div class="comment">
                     <p>
                         <strong>
-                            <a href="{{ url_for('other_profile', profile_id=comment['user_id']) }}" 
+                            <a href="{{ url_for('profile', profile_id=comment['user_id']) }}" 
                             style="color: var(--accent); text-decoration: none;">
                             {{ comment['username'] }}
                             </a>

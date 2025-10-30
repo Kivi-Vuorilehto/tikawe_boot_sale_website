@@ -106,36 +106,13 @@ def logout():
 
 
 @app.route("/profile/<int:profile_id>")
-def other_profile(profile_id):
+def profile(profile_id):
     if "user_id" not in session:
         return redirect(url_for("login"))
     username, time_stamp = users.get_profile_info(profile_id)
     if username is None:
         abort(404)
 
-    search = request.args.get("search")
-    sort = request.args.get("sort")
-    category = request.args.get("category")
-    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort, category=category)
-    categories = listings.get_categories()
-
-    listings_with_images = []
-    for l in user_listings:
-        listing_dict = dict(l)
-        listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
-        listings_with_images.append(listing_dict)
-    return render_template("profile.html", title="Account", profile_id=profile_id,
-                           username=username, time_stamp=time_stamp,
-                           listings=listings_with_images, selected_sort=sort,
-                           selected_category=category, categories=categories)
-
-@app.route("/profile")
-def profile():
-    if "user_id" not in session:
-        return redirect(url_for("login"))
-
-    profile_id = session["user_id"]
-    username, time_stamp = users.get_profile_info(profile_id)
     search = request.args.get("search")
     sort = request.args.get("sort")
     category = request.args.get("category")
