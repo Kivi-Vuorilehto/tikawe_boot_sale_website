@@ -1,10 +1,14 @@
 A small website created to pass a basics of web-development and databases course.
 
 ### Description
-The website is designed to host adverts for boot sales or garage sales. 
-A user can post a listing on the feed which contains images, title, description, category, price and location. Thus others users can look at your items, see where they are sold and go buy them if they wish. 
+The website is designed to host adverts for boot sales, garage sales or yard sales. 
 
-A user can search the feed by category, price, creator username and title.
+A user can register an account and log in to the site.
+A user can post a listing on the feed which contains images, a title, a description, a category, a price and a location. 
+A feed displays all added listings to all visitors.
+
+A user can filter the feed by category and title.
+A user can sort the feed by price and time.
 
 Comments can also be left on listings with futher questions to the seller.
 
@@ -13,22 +17,38 @@ Each user has a profile in which all their listings are displayed. From here the
 
 
 ### Setup
-(For windows users, use Powershell)
 
 #### Unix
-```bash
+```
 python3 -m venv venv
 source venv/bin/activate
 pip install flask
+sqlite3 market.db < schema.sql
+sqlite3 market.db < init.sql
 flask run
 ```
 
-#### Windows
-```bash
+#### Windows Poweshell
+To generate and populate the database without the python scripts you will need to download sqlite3 separately.
+
+```
 python3 -m venv venv
 venv/Scripts/activate
 pip install flask
+type .\schema.sql | .\sqlite3.exe market.db
+type .\init.sql | .\sqlite3.exe market.db
 flask run
 ```
+
+Alternatively if you wish to generate the database with a python script then run:
+```
+python3 create_db.py
+```
+
+If you wish to populate the database with sample random data then run:
+```
+python3 populate_db.py
+```
+
 
 The server is hosted at localhost:5000 by default.

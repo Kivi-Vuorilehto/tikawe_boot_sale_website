@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% if title %}
+        <title>{{ title }}</title>
+    {% else %}
+        <title>Home</title>
+    {% endif %}
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="nav-left">
+            <a href="{{ url_for('index') }}" class="logo">Yardly</a>
+        </div>
+        <div class="nav-links">
+            {% if session.get("user_id") %}
+                <a href="{{ url_for('create_listing') }}">Create new listing</a> |
+                <a href="{{ url_for('profile', profile_id=session['user_id']) }}">Account</a> |
+                <a href="{{ url_for('logout') }}">Logout</a>
+            {% else %}
+                <a href="{{ url_for('login') }}">Login</a> |
+                <a href="{{ url_for('register') }}">Register</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% block content %}{% endblock %}
+</body>
+</html>

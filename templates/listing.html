@@ -1,0 +1,156 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="gallery-container">
+
+    <h2>{{ listing['title'] }}</h2>
+    <p class="small"><strong>Category:</strong> {{ category_name }} | <strong>Location:</strong> {{ listing['location'] }}</p>
+    <p class="small"><strong>Price:</strong> ${{ listing['price'] }}</p>
+    <p class="small"><strong>Created:</strong> {{ listing['time_stamp'] }}</p>
+
+    <!-- Listing Images Carousel, thank you mister CurreChat -->
+    {% if listing_images and listing_images|length > 0 %}
+    <div class="carousel-container">
+
+        {% for img in listing_images %}
+        <input type="radio" name="carousel-{{ listing['listing_id'] }}" id="slide{{ loop.index }}" {% if loop.first %}checked{% endif %}>
+        {% endfor %}
+
+        <div class="carousel-slides">
+            {% for img in listing_images %}
+            <div class="carousel-slide">
+                <img src="{{ url_for('static', filename='uploads/' ~ img['image_url']) }}" alt="Listing Image">
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="carousel-dots">
+            {% for img in listing_images %}
+            <label for="slide{{ loop.index }}" class="carousel-dot"></label>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+        <div class="listing-thumbnail placeholder">No images available</div>
+    {% endif %}
+
+    <p style="margin-top: 12px; word-break: break-word; overflow-wrap: break-word;">{{ listing['description'] | preserve_newlines }}</p>
+
+    {% set creator_username, _ = users.get_profile_info(listing['user_id']) %}
+    <p class="small"><strong>Created by:</strong> 
+        <a href="{{ url_for('profile', profile_id=listing['user_id']) }}">
+            {{ creator_username }}
+        </a>
+    </p>
+
+    {% if session.get("user_id") == listing['user_id'] %}
+        <div style="margin-top: 12px;">
+            <form method="POST" action="{{ url_for('delete_listing', listing_id=listing['listing_id']) }}" style="display:inline;">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <button type="submit" onclick="return confirm('Are you sure you want to delete this listing?')">Delete Listing</button>
+            </form>
+        </div>
+    {% endif %}
+
+    <h3 style="margin-top: 24px;">Comments</h3>
+    <div class="comments">
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="comment">
+                    <p>
+                        <strong>
+                            <a href="{{ url_for('profile', profile_id=comment['user_id']) }}" 
+                            style="color: var(--accent); text-decoration: none;">
+                            {{ comment['username'] }}
+                            </a>
+                        </strong>
+                        <span class="small">{{ comment['time_stamp'] }}</span>
+                    </p>
+                    <p>{{ comment['comment_text'] | preserve_newlines }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="empty-message">No comments yet.</p>
+        {% endif %}
+    </div>
+
+    {% if session.get("user_id") %}
+        <div class="add-comment" style="margin-top: 20px;">
+            <form method="POST" action="{{ url_for('add_comment', listing_id=listing['listing_id']) }}">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
+                <textarea name="comment_text" rows="3" placeholder="Write a comment..." required
+                        style="width: 100%; padding: 10px; border-radius: 8px; border: 1px solid #ccc; resize: vertical;"></textarea>
+                <button type="submit" style="margin-top: 8px; background: var(--accent); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer;">
+                    Post Comment
+                </button>
+            </form>
+        </div>
+    {% else %}
+        <p><em><a href="{{ url_for('login') }}">Log in</a> to post a comment.</em></p>
+    {% endif %}
+</div>
+
+<!-- Inline CSS for the carousel -->
+<style>
+.carousel-container {
+    position: relative;
+    max-width: 1080px;
+    width: 100%;
+    margin: 12px auto;
+    overflow: hidden;
+    border-radius: 8px;
+    border: 1px solid rgba(15,23,42,0.06);
+}
+
+/* Hide radio buttons */
+.carousel-container input[type="radio"] { display: none; }
+
+/* Slides wrapper */
+.carousel-slides {
+    display: flex;
+    width: 100%;
+    transition: transform 0.4s ease-in-out;
+}
+
+/* Each slide */
+.carousel-slide {
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.carousel-slide img {
+    width: 100%;
+    height: auto;
+    max-height: 80vh;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* Dots */
+.carousel-dots {
+    text-align: center;
+    margin-top: 8px;
+}
+
+.carousel-dot {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 6px;
+    cursor: pointer;
+}
+
+/* Active dot & slide transform */
+{% for i in range(1, listing_images|length + 1) %}
+    #slide{{ i }}:checked ~ .carousel-slides {
+        transform: translateX(-{{ (i-1)*100 }}%);
+    }
+    #slide{{ i }}:checked ~ .carousel-dots label:nth-child({{ i }}) {
+        background: var(--accent);
+    }
+{% endfor %}
+</style>
+
+{% endblock %}
