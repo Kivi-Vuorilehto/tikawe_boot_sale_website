@@ -3,6 +3,7 @@ from datetime import datetime, timezone
 from flask import Flask
 from flask import render_template, redirect, request, session, url_for, abort
 from werkzeug.utils import secure_filename
+from markupsafe import Markup, escape
 import users, listings, config, db
 
 
@@ -14,6 +15,10 @@ db.init_database()
 
 def format_time(time_string):
     return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
+
+@app.template_filter("preserve_newlines")
+def preserve_newlines(data):
+    return Markup("<br>".join(escape(data).split("\n")))
 
 @app.route("/")
 def index():

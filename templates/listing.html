@@ -38,7 +38,7 @@
     {% endif %}
 
     <!-- Listing Description -->
-    <p style="margin-top: 12px;">{{ listing['description'] }}</p>
+    <p style="margin-top: 12px;">{{ listing['description'] | preserve_newlines }}</p>
 
     <!-- Creator Info -->
     {% set creator_username, _ = users.get_profile_info(listing['user_id']) %}
@@ -72,7 +72,7 @@
                         </strong>
                         <span class="small">{{ comment['time_stamp'] }}</span>
                     </p>
-                    <p>{{ comment['comment_text'] }}</p>
+                    <p>{{ comment['comment_text'] | preserve_newlines }}</p>
                 </div>
             {% endfor %}
         {% else %}
