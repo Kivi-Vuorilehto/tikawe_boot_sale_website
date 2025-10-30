@@ -13,16 +13,6 @@ app.secret_key = config.secret_key
 
 db.init_database()
 
-def format_time(time_string):
-    return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
-
-def allowed_filetype(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png",
-                                                                      "jpg", "jpeg", "gif", "webp"}
-
-@app.template_filter("preserve_newlines")
-def preserve_newlines(data):
-    return Markup("<br>".join(escape(data).split("\n")))
 
 @app.after_request
 def set_secure_headers(response):
@@ -56,6 +46,62 @@ def generate_csrf_token():
     return session['_csrf_token']
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
+
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+
+        user_id = users.check_login(username, password)
+        if user_id:
+            session["user_id"] = user_id
+            return redirect(url_for("index"))
+        else:
+            return render_template("login.html", error="Invalid credentials", title="Login")
+
+    return render_template("login.html", title="Login")
+
+@app.route("/register", methods=["GET", "POST"])
+def register():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
+        confirm_password = request.form["confirm_password"]
+
+        # Include more complex requirements
+        if not username or not password:
+            return render_template("register.html", error="Please fill in all fields,",
+                                   title="Register")
+        if users.username_exists(username):
+            return render_template("register.html", error="Username already taken.",
+                                   title="Register")
+        if password != confirm_password:
+            return render_template("register.html", error="Passwords must match.",
+                                   title="Register")
+
+        time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+        users.create_user(username, password, time_stamp)
+        return redirect(url_for("login"))
+    return render_template("register.html", title="Register")
+
+@app.route("/logout")
+def logout():
+    del session["user_id"]
+    return redirect(url_for("index"))
+
+
+def format_time(time_string):
+    return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
+
+def allowed_filetype(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png",
+                                                                      "jpg", "jpeg", "gif", "webp"}
+
+@app.template_filter("preserve_newlines")
+def preserve_newlines(data):
+    return Markup("<br>".join(escape(data).split("\n")))
 
 @app.route("/")
 def index():
@@ -103,50 +149,6 @@ def add_comment(listing_id):
 
     return redirect(url_for("show_listing", listing_id=listing_id))
 
-@app.route("/login", methods=["GET", "POST"])
-def login():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-
-        user_id = users.check_login(username, password)
-        if user_id:
-            session["user_id"] = user_id
-            return redirect(url_for("index"))
-        else:
-            return render_template("login.html", error="Invalid credentials", title="Login")
-
-    return render_template("login.html", title="Login")
-
-@app.route("/register", methods=["GET", "POST"])
-def register():
-    if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        confirm_password = request.form["confirm_password"]
-
-        # Include more complex requirements
-        if not username or not password:
-            return render_template("register.html", error="Please fill in all fields,",
-                                   title="Register")
-        if users.username_exists(username):
-            return render_template("register.html", error="Username already taken.",
-                                   title="Register")
-        if password != confirm_password:
-            return render_template("register.html", error="Passwords must match.",
-                                   title="Register")
-
-        time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-        users.create_user(username, password, time_stamp)
-        return redirect(url_for("login"))
-    return render_template("register.html", title="Register")
-
-@app.route("/logout")
-def logout():
-    del session["user_id"]
-    return redirect(url_for("index"))
-
-
 @app.route("/profile/<int:profile_id>")
 def profile(profile_id):
     if "user_id" not in session:
@@ -158,7 +160,8 @@ def profile(profile_id):
     search = request.args.get("search")
     sort = request.args.get("sort")
     category = request.args.get("category")
-    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort, category=category)
+    user_listings = listings.get_user_listings(profile_id, search=search,
+                                               sort=sort, category=category)
     categories = listings.get_categories()
 
     listings_with_images = []
@@ -170,7 +173,6 @@ def profile(profile_id):
                            username=username, time_stamp=time_stamp,
                            listings=listings_with_images, selected_sort=sort,
                            selected_category=category, categories=categories)
-
 
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():
@@ -212,7 +214,6 @@ def create_listing():
         return redirect(url_for("profile"))
 
     return render_template("create_listing.html", title="Create Listing", categories=categories)
-
 
 @app.route("/delete_listing/<int:listing_id>", methods=["POST"])
 def delete_listing(listing_id):
