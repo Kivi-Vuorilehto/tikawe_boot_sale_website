@@ -1,11 +1,11 @@
 import os
+import secrets
 from datetime import datetime, timezone
 from flask import Flask
 from flask import render_template, redirect, request, session, url_for, abort
 from werkzeug.utils import secure_filename
 from markupsafe import Markup, escape
 import users, listings, config, db
-
 
 
 app = Flask(__name__)
@@ -23,6 +23,20 @@ def allowed_filetype(filename):
 @app.template_filter("preserve_newlines")
 def preserve_newlines(data):
     return Markup("<br>".join(escape(data).split("\n")))
+
+@app.before_request
+def csrf_protect():
+    if request.method == "POST":
+        token = session.get('_csrf_token')
+        if not token or token != request.form.get('_csrf_token'):
+            abort(403)
+
+def generate_csrf_token():
+    if '_csrf_token' not in session:
+        session['_csrf_token'] = secrets.token_hex(16)
+    return session['_csrf_token']
+
+app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 @app.route("/")
 def index():

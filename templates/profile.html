@@ -10,7 +10,7 @@
     {% endif %}
     <h2>Listings</h2><br>
 
-    <form method="get" action="{{ url_for('profile', profile_id=profile_id) }}" class="search-form" style="padding: 0px;">
+    <form method="GET" action="{{ url_for('profile', profile_id=profile_id) }}" class="search-form" style="padding: 0px;">
         <input type="text" name="search" placeholder="Filter by title..." value="{{ request.args.get('search', '') }}">
 
         <select name="category">
