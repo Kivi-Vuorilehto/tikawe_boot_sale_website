@@ -35,4 +35,15 @@ pip install flask
 flask run
 ```
 
+If you wish to re-generate the database:
+```
+python3 create_db.py
+```
+
+If you wish to populate the database with sample random data:
+```
+python3 populate_db.py
+```
+
+
 The server is hosted at localhost:5000 by default.

@@ -4,7 +4,7 @@ import db
 
 IMAGEURL = "static/uploads"
 
-def get_user_listings(user_id, category=None, search=None, sort=None):
+def get_user_listings(user_id, category=None, search=None, sort=None, limit=50, offset=0):
     sql = "SELECT * FROM Listings WHERE user_id = ? AND status = 1"
     params = [user_id]
     if category:
@@ -22,11 +22,14 @@ def get_user_listings(user_id, category=None, search=None, sort=None):
         sql += " ORDER BY price DESC"
     else:
         sql += " ORDER BY time_stamp DESC"
-   
+
+    sql += " LIMIT ? OFFSET ?"
+    params.extend([limit, offset])
+
     return db.query(sql, params)
 
 
-def get_listings(category=None, search=None, sort=None):
+def get_listings(category=None, search=None, sort=None, limit=50, offset=0):
     sql = "SELECT * FROM Listings WHERE status = 1"
     params = []
 
@@ -46,6 +49,9 @@ def get_listings(category=None, search=None, sort=None):
     else:
         sql += " ORDER BY time_stamp DESC"
 
+    sql += " LIMIT ? OFFSET ?"
+    params.extend([limit, offset])
+    
     return db.query(sql, params)
 
 
