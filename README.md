@@ -24,23 +24,29 @@ Each user has a profile in which all their listings are displayed. From here the
 python3 -m venv venv
 source venv/bin/activate
 pip install flask
+sqlite3 market.db < schema.sql
+sqlite3 market.db < init.sql
 flask run
 ```
 
 #### Windows
+To generate and populate the database without the python scripts you will need to download sqlite3 separately.
+
 ```bash
 python3 -m venv venv
 venv/Scripts/activate
 pip install flask
+sqlite3.exe market.db < schema.sql
+sqlite3.exe market.db < init.sql
 flask run
 ```
 
-If you wish to re-generate the database:
+Alternatively if you wish to generate the database with a python script then run:
 ```
 python3 create_db.py
 ```
 
-If you wish to populate the database with sample random data:
+If you wish to populate the database with sample random data then run:
 ```
 python3 populate_db.py
 ```
