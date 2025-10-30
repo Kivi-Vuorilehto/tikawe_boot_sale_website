@@ -16,6 +16,10 @@ db.init_database()
 def format_time(time_string):
     return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
 
+def allowed_filetype(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png",
+                                                                      "jpg", "jpeg", "gif", "webp"}
+
 @app.template_filter("preserve_newlines")
 def preserve_newlines(data):
     return Markup("<br>".join(escape(data).split("\n")))
@@ -134,6 +138,7 @@ def profile(profile_id):
                            listings=listings_with_images, selected_sort=sort,
                            selected_category=category, categories=categories)
 
+
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():
     if "user_id" not in session:
@@ -165,7 +170,7 @@ def create_listing():
         )
 
         for img in images:
-            if img.filename != "":
+            if img.filename != "" and allowed_filetype(img.filename):
                 filename = f"{listing_id}_{secure_filename(img.filename)}"
                 filepath = os.path.join("static/uploads", filename)
                 img.save(filepath)

@@ -22,7 +22,7 @@ def get_user_listings(user_id, category=None, search=None, sort=None):
         sql += " ORDER BY price DESC"
     else:
         sql += " ORDER BY time_stamp DESC"
-        
+   
     return db.query(sql, params)
 
 

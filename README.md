@@ -1,7 +1,7 @@
 A small website created to pass a basics of web-development and databases course.
 
 ### Description
-The website is designed to host adverts for boot sales or garage sales. 
+The website is designed to host adverts for boot sales, garage sales or yard sales. 
 A user can post a listing on the feed which contains images, title, description, category, price and location. Thus others users can look at your items, see where they are sold and go buy them if they wish. 
 
 A user can search the feed by category, price, creator username and title.
