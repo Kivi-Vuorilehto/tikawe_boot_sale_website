@@ -106,18 +106,25 @@ def index():
     search = request.args.get("search")
     sort = request.args.get("sort")
     category = request.args.get("category")
+    page = int(request.args.get("page", 1))
 
-    all_listings = listings.get_listings(search=search, sort=sort, category=category)
+    offset = (page - 1) * 32 # Num of listings per page
+
+    all_listings = listings.get_listings(search=search, sort=sort,
+                                         category=category, limit=32, offset=offset)
     categories = listings.get_categories()
+    category_map = {cat["category_id"]: cat["category_name"] for cat in categories}
 
     listings_with_images = []
     for l in all_listings:
         listing_dict = dict(l)
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
+        listing_dict["category_name"] = category_map.get(listing_dict["category"], "Unknown")
         listings_with_images.append(listing_dict)
 
     return render_template("index.html", listings=listings_with_images,
-                           selected_sort=sort, selected_category=category, categories=categories)
+                           selected_sort=sort, selected_category=category,
+                           categories=categories, page=page, endpoint="index")
 
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
@@ -126,8 +133,12 @@ def show_listing(listing_id):
         abort(404)
     comments = listings.get_comments(listing_id)
     listing_images = listings.get_listing_images(listing_id)
+    categories = listings.get_categories()
+    category_map = {cat["category_id"]: cat["category_name"] for cat in categories}
+    category_name = category_map.get(listing["category"], "Unknown")
     return render_template("listing.html", listing=listing, comments=comments,
-                           listing_images=listing_images, users=users)
+                           listing_images=listing_images, users=users,
+                           category_name=category_name)
 
 @app.route("/listing/<int:listing_id>/comment", methods=["POST"])
 def add_comment(listing_id):
@@ -158,19 +169,26 @@ def profile(profile_id):
     search = request.args.get("search")
     sort = request.args.get("sort")
     category = request.args.get("category")
+    page = int(request.args.get("page", 1))
+    offset = (page - 1) * 32
+
     user_listings = listings.get_user_listings(profile_id, search=search,
-                                               sort=sort, category=category)
+                                               sort=sort, category=category,
+                                               limit=32, offset=offset)
     categories = listings.get_categories()
+    category_map = {cat["category_id"]: cat["category_name"] for cat in categories}
 
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
+        listing_dict["category_name"] = category_map.get(listing_dict["category"], "Unknown")
         listings_with_images.append(listing_dict)
     return render_template("profile.html", title="Account", profile_id=profile_id,
                            username=username, time_stamp=time_stamp,
                            listings=listings_with_images, selected_sort=sort,
-                           selected_category=category, categories=categories)
+                           selected_category=category, categories=categories,
+                           page=page, endpoint="profile")
 
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():

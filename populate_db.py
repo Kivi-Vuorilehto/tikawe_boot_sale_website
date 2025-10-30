@@ -12,9 +12,9 @@ UPLOAD_FOLDER = "static/uploads"
 IMAGE_PREFIX = "Beagle_"
 IMAGE_COUNT = 100
 
-NUM_USERS = 4000
-NUM_LISTINGS = 10000
-NUM_COMMENTS = 50000
+NUM_USERS = 10
+NUM_LISTINGS = 50
+NUM_COMMENTS = 10
 
 
 def random_string(length):

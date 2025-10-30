@@ -41,7 +41,6 @@ main, .container {
   padding: 0 18px 40px 18px;  
 }
 
-/* ---------- Nav ---------- */
 nav {
   height: var(--nav-height);
   display: flex;
@@ -255,6 +254,29 @@ h4 { font-size: 1rem; }
 
 .gallery-container .btn:hover { 
   background: var(--accent-600); 
+}
+
+.pagination {
+  align-items: center;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  gap: 8px;
+}
+
+.pagination a {
+  margin: 0 10px;
+  text-decoration: none;
+  color: #007bff;
+}
+
+.pagination span {
+  font-weight: bold;
+}
+
+.bottom-spacer {
+  height: 20px;
 }
 
 .form-container {

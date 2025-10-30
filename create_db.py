@@ -31,7 +31,7 @@ def init_database():
             title TEXT,
             description TEXT,
             price REAL,
-            category TEXT REFERENCES ListingCategories (category_id),
+            category INTEGER REFERENCES ListingCategories (category_id),
             location TEXT,
             time_stamp TEXT,
             status INTEGER DEFAULT 1
