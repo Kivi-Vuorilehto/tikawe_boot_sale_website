@@ -11,8 +11,6 @@ import users, listings, config, db
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
-db.init_database()
-
 
 @app.after_request
 def set_secure_headers(response):
@@ -184,7 +182,7 @@ def create_listing():
         title = request.form.get("title")
         description = request.form.get("description")
         price = request.form.get("price")
-        category = request.form.get("category")
+        category = int(request.form.get("category"))
         location = request.form.get("location")
         images = request.files.getlist("images")
 
@@ -211,7 +209,7 @@ def create_listing():
                 img.save(filepath)
                 listings.add_listing_image(listing_id, filename)
 
-        return redirect(url_for("profile"))
+        return redirect(url_for("index"))
 
     return render_template("create_listing.html", title="Create Listing", categories=categories)
 

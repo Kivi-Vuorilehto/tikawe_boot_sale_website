@@ -106,5 +106,5 @@ def get_comments(listing_id):
     return db.query(sql, [listing_id])
 
 def get_categories():
-    sql = "SELECT * FROM ListingCategories ORDER BY category_name ASC"
+    sql = "SELECT category_id, category_name FROM ListingCategories ORDER BY category_name ASC"
     return db.query(sql)
