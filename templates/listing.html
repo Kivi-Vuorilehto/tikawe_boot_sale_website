@@ -34,7 +34,7 @@
         <div class="listing-thumbnail placeholder">No images available</div>
     {% endif %}
 
-    <p style="margin-top: 12px;">{{ listing['description'] | preserve_newlines }}</p>
+    <p style="margin-top: 12px; word-break: break-word; overflow-wrap: break-word;">{{ listing['description'] | preserve_newlines }}</p>
 
     {% set creator_username, _ = users.get_profile_info(listing['user_id']) %}
     <p class="small"><strong>Created by:</strong> 
