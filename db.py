@@ -3,10 +3,10 @@ from flask import g
 
 DATABASE = "market.db"
 def get_connection():
-    con = sqlite3.connect(DATABASE)
-    con.execute("PRAGMA foreign_keys = ON")
-    con.row_factory = sqlite3.Row
-    return con
+    conn = sqlite3.connect(DATABASE)
+    conn.execute("PRAGMA foreign_keys = ON")
+    conn.row_factory = sqlite3.Row
+    return conn
 
 def init_database():
     conn = get_connection()
@@ -20,13 +20,19 @@ def init_database():
         );""")
 
     cursor.execute("""
+        CREATE TABLE IF NOT EXISTS ListingCategories (
+            category_id INTEGER PRIMARY KEY,
+            category_name TEXT NOT NULL UNIQUE
+        );""")
+
+    cursor.execute("""
         CREATE TABLE IF NOT EXISTS Listings (
             listing_id INTEGER PRIMARY KEY,
             user_id INTEGER REFERENCES Users(user_id) ON DELETE CASCADE,
             title TEXT,
             description TEXT,
             price REAL,
-            category TEXT,
+            category TEXT REFERENCES ListingCategories (category_id),
             location TEXT,
             time_stamp TEXT,
             status INTEGER DEFAULT 1
@@ -47,21 +53,36 @@ def init_database():
             comment_text TEXT,
             time_stamp TEXT
         );""")
+
+    cursor.execute("""
+        INSERT OR IGNORE INTO ListingCategories (category_name) VALUES
+        ('Electronics'),
+        ('Clothing'),
+        ('Home & Garden'),
+        ('Food'),
+        ('Toys & Games'),
+        ('Books'),
+        ('Furniture'),
+        ('Tools'),
+        ('Sports Equipment'),
+        ('Collectibles'),
+        ('Other'); """)
+
     conn.commit()
     conn.close()
 
 
 def execute(sql, params=[]):
-    con = get_connection()
-    result = con.execute(sql, params)
-    con.commit()
+    conn = get_connection()
+    result = conn.execute(sql, params)
+    conn.commit()
     g.last_insert_id = result.lastrowid
-    con.close()
+    conn.close()
 
 def query(sql, params=[]):
-    con = get_connection()
-    result = con.execute(sql, params).fetchall()
-    con.close()
+    conn = get_connection()
+    result = conn.execute(sql, params).fetchall()
+    conn.close()
     return result
 
 def last_insert_id():

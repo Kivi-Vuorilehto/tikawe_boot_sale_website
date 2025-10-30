@@ -104,3 +104,7 @@ def get_comments(listing_id):
         ORDER BY c.time_stamp ASC
     """
     return db.query(sql, [listing_id])
+
+def get_categories():
+    sql = "SELECT * FROM ListingCategories ORDER BY category_name ASC"
+    return db.query(sql)

@@ -19,7 +19,10 @@ def format_time(time_string):
 def index():
     search = request.args.get("search")
     sort = request.args.get("sort")
-    all_listings = listings.get_listings(search=search, sort=sort)
+    category = request.args.get("category")
+
+    all_listings = listings.get_listings(search=search, sort=sort, category=category)
+    categories = listings.get_categories()
 
     listings_with_images = []
     for l in all_listings:
@@ -27,7 +30,8 @@ def index():
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
 
-    return render_template("index.html", listings=listings_with_images, selected_sort=sort)
+    return render_template("index.html", listings=listings_with_images,
+                           selected_sort=sort, selected_category=category, categories=categories)
 
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
@@ -36,7 +40,8 @@ def show_listing(listing_id):
         abort(404)
     comments = listings.get_comments(listing_id)
     listing_images = listings.get_listing_images(listing_id)
-    return render_template("listing.html", listing=listing, comments=comments, listing_images=listing_images, users=users)
+    return render_template("listing.html", listing=listing, comments=comments,
+                           listing_images=listing_images, users=users)
 
 @app.route("/listing/<int:listing_id>/comment", methods=["POST"])
 def add_comment(listing_id):
@@ -110,7 +115,9 @@ def other_profile(profile_id):
 
     search = request.args.get("search")
     sort = request.args.get("sort")
-    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort)
+    category = request.args.get("category")
+    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort, category=category)
+    categories = listings.get_categories()
 
     listings_with_images = []
     for l in user_listings:
@@ -119,7 +126,8 @@ def other_profile(profile_id):
         listings_with_images.append(listing_dict)
     return render_template("profile.html", title="Account", profile_id=profile_id,
                            username=username, time_stamp=time_stamp,
-                           listings=listings_with_images, selected_sort=sort)
+                           listings=listings_with_images, selected_sort=sort,
+                           selected_category=category, categories=categories)
 
 @app.route("/profile")
 def profile():
@@ -130,21 +138,25 @@ def profile():
     username, time_stamp = users.get_profile_info(profile_id)
     search = request.args.get("search")
     sort = request.args.get("sort")
-    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort)
+    category = request.args.get("category")
+    user_listings = listings.get_user_listings(profile_id, search=search, sort=sort, category=category)
+    categories = listings.get_categories()
+
     listings_with_images = []
     for l in user_listings:
         listing_dict = dict(l)
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listings_with_images.append(listing_dict)
-    
     return render_template("profile.html", title="Account", profile_id=profile_id,
                            username=username, time_stamp=time_stamp,
-                           listings=listings_with_images, selected_sort=sort)
+                           listings=listings_with_images, selected_sort=sort,
+                           selected_category=category, categories=categories)
 
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():
     if "user_id" not in session:
         return redirect("/login")
+    categories = listings.get_categories()
 
     if request.method == "POST":
         title = request.form.get("title")
@@ -158,7 +170,7 @@ def create_listing():
             return render_template(
                 "create_listing.html",
                 error="Please fill in all required fields.",
-                title="Create Listing")
+                title="Create Listing", categories=categories)
 
         listing_id = listings.create_listing(
             user_id=session["user_id"],
@@ -179,7 +191,7 @@ def create_listing():
 
         return redirect(url_for("profile"))
 
-    return render_template("create_listing.html", title="Create Listing")
+    return render_template("create_listing.html", title="Create Listing", categories=categories)
 
 
 @app.route("/delete_listing/<int:listing_id>", methods=["POST"])
