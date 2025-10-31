@@ -9,10 +9,11 @@
         <a href="{{ url_for('create_listing') }}" class="btn">Create New Listing</a>
     {% endif %}
     <h2>Listings</h2><br>
-
-    <form method="GET" action="{{ url_for('profile', profile_id=profile_id) }}" class="search-form" style="padding: 0px;">
+    <form method="GET" action="{{ url_for('profile', profile_id=profile_id) }}" class="search-form">
+        <label for="search">Search by title</label>
         <input type="text" name="search" placeholder="Filter by title..." value="{{ request.args.get('search', '') }}">
 
+        <label for="category">Search by category</label>
         <select name="category">
             <option value="">All Categories</option>
             {% for cat in categories %}
@@ -22,6 +23,7 @@
             {% endfor %}
         </select>
 
+        <label for="sort">Sort By</label>
         <select name="sort">
             <option value="">Newest First</option>
             <option value="time_asc" {% if selected_sort == 'time_asc' %}selected{% endif %}>Oldest First</option>
@@ -39,7 +41,7 @@
                     <div class="listing-card">
                         {% if listing['images'] and listing['images']|length > 0 %}
                             <img src="{{ url_for('static', filename='uploads/' ~ listing['images'][0]['image_url']) }}" 
-                                alt="Listing image" class="listing-thumbnail">
+                                alt="Listing thumbnail image" class="listing-thumbnail">
                         {% else %}
                             <div class="listing-thumbnail placeholder">No image</div>
                         {% endif %}

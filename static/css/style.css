@@ -8,7 +8,7 @@
     --danger: #dc2626;
     --shadow: 0 6px 20px rgba(17,24,39,0.08);
     --radius: 12px;
-    --max-width: 1100px;
+    --max-width: 1920px;
     --nav-height: 60px;
 }
 
@@ -120,6 +120,13 @@ h3 {
     font-size: 1.1rem; 
 }
 
+.content-wrapper {
+    display: flex;
+    gap: 24px;
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 24px;
+}
 
 .form-container {
     background: var(--card);
@@ -165,14 +172,27 @@ h3 {
 }
 
 .search-form {
+    flex: 0 0 220px;
+    max-height: 324px;
     display: flex;
-    gap: 8px;
-    padding: 24px;
-    max-width: 200px;
+    align-self: flex;
+    margin-top: 24px;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid rgba(15,23,42,0.06);
+}
+
+.search-form label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 4px;
 }
 
 .search-form input[type="text"] {
-    flex: 1;
     padding: 8px;
     border-radius: 8px;
     border: 1px solid #ccc;
@@ -236,12 +256,13 @@ button:hover {
 }
 
 .listings-container {
+    flex: 1;
     display: flex;
     flex-wrap: wrap;
     max-width: var(--max-width);
     gap: 20px;
     max-width: fit-content;
-    justify-content: center;
+    justify-content: flex-start;
     padding-left: 24px;
     padding-right: 24px;
     padding-top: 24px;
