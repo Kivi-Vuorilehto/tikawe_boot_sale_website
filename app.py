@@ -10,6 +10,7 @@ import users, listings, config, db
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
+app.config["MAX_CONTENT_LENGTH"] = config.max_upload_size
 
 
 @app.after_request
@@ -44,6 +45,13 @@ def generate_csrf_token():
     return session['_csrf_token']
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
+
+@app.errorhandler(413)
+def too_large(e):
+    return render_template("create_listing.html",
+                           error="Upload too large (max 20 MB total).",
+                           title="Create Listing",
+                           categories=listings.get_categories()), 413
 
 
 @app.route("/login", methods=["GET", "POST"])

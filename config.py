@@ -1,1 +1,2 @@
 secret_key = "86b03e370190606394539c8a57cdbd0168e4660732c2b38b"
+max_upload_size = 20 * 1024 * 1024
