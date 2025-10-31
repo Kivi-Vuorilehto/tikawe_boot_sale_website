@@ -12,13 +12,13 @@
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
 
         <label for="title">Title:</label><br>
-        <input type="text" name="title" id="title" value="{{ listing['title'] }}" required><br><br>
+        <input type="text" name="title" id="title" maxlength="150" value="{{ listing['title'] }}" required><br><br>
 
         <label for="description">Description:</label><br>
-        <textarea name="description" id="description" rows="4" required>{{ listing['description'] | preserve_newlines }}</textarea><br><br>
+        <textarea name="description" id="description" rows="4" maxlength="5000" required>{{ listing['description'] | preserve_newlines }}</textarea><br><br>
 
         <label for="price">Price ($):</label><br>
-        <input type="number" step="0.01" name="price" id="price" value="{{ listing['price'] }}" required><br><br>
+        <input type="number" step="0.01" name="price" id="price" maxlength="100" value="{{ listing['price'] }}" required><br><br>
 
         <label for="category">Category:</label><br>
         <select name="category" id="category" required class="category-form">
@@ -30,7 +30,10 @@
         </select><br><br>
 
         <label for="location">Location:</label><br>
-        <input type="text" name="location" id="location" value="{{ listing['location'] }}"><br><br>
+        <input type="text" name="location" id="location" maxlength="200" value="{{ listing['location'] }}"><br><br>
+
+        <label for="images">Images (optional, new images will be added, max 20 total):</label><br>
+        <input type="file" name="images" id="images" multiple accept="image/*"><br><br>
 
         <button type="submit">Update Listing</button>
     </form>

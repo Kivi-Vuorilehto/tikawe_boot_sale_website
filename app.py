@@ -5,7 +5,7 @@ from flask import Flask
 from flask import render_template, redirect, request, session, url_for, abort
 from werkzeug.utils import secure_filename
 from markupsafe import Markup, escape
-import users, listings, config, db
+import users, listings, config
 
 
 app = Flask(__name__)
@@ -52,14 +52,14 @@ def too_large(e):
         listing_id = request.path.split("/edit_listing/")[1]
         return render_template("edit_listing.html",
                            error="Upload too large (max 20 MB total).",
-                           title="Edit Listing",
+                           title="Edit listing",
                            listing=listings.get_listing(listing_id),
                            categories=listings.get_categories()), 413
 
 
     return render_template("create_listing.html",
                            error="Upload too large (max 20 MB total).",
-                           title="Create Listing",
+                           title="Create listing",
                            categories=listings.get_categories()), 413
 
 def format_time(time_string):
@@ -79,6 +79,12 @@ def login():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
+
+        if len(username) > 50 or len(password) > 50:
+            return render_template(
+                "login.html",
+                error="Username or password too long. (Max 50 characters)",
+                title="Login")
 
         user_id = users.check_login(username, password)
         if user_id:
@@ -100,6 +106,13 @@ def register():
         if not username or not password:
             return render_template("register.html", error="Please fill in all fields,",
                                    title="Register")
+
+        if len(username) > 50 or len(password) > 50:
+            return render_template(
+                "register.html",
+                error="Username or password too long. (Max 50 characters)",
+                title="Register")
+
         if users.username_exists(username):
             return render_template("register.html", error="Username already taken.",
                                    title="Register")
@@ -226,6 +239,21 @@ def create_listing():
                 error="Please fill in all required fields.",
                 title="Create Listing", categories=categories)
 
+        if len(title) > 150 or len(price) > 100 or len(location) > 200 or len(description) > 5000:
+            return render_template(
+                "create_listing.html",
+                error="Title, location, price, or description too long.",
+                title="Create listing",
+                categories=categories)
+
+        new_images = request.files.getlist("images")
+        if len(new_images) > 20:
+            return render_template(
+                "create_listing.html",
+                error="Cannot attach more than 20 images in total.",
+                title="Create listing",
+                categories=categories)
+
         listing_id = listings.create_listing(
             user_id=session["user_id"],
             title=title,
@@ -233,8 +261,7 @@ def create_listing():
             price=float(price),
             category=category,
             location=location,
-            time_stamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-        )
+            time_stamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"))
 
         for img in images:
             if img.filename != "" and allowed_filetype(img.filename):
@@ -245,7 +272,7 @@ def create_listing():
 
         return redirect(url_for("index"))
 
-    return render_template("create_listing.html", title="Create Listing", categories=categories)
+    return render_template("create_listing.html", title="Create listing", categories=categories)
 
 @app.route("/edit_listing/<int:listing_id>", methods=["GET", "POST"])
 def edit_listing(listing_id):
@@ -260,6 +287,8 @@ def edit_listing(listing_id):
         abort(403)
 
     categories = listings.get_categories()
+    existing_images = listings.get_listing_images(listing_id)
+    existing_image_count = len(existing_images)
 
     if request.method == "POST":
         title = request.form.get("title")
@@ -274,8 +303,25 @@ def edit_listing(listing_id):
                 title="Edit listing",
                 listing=listing,
                 categories=categories,
-                error="Please fill in all required fields."
-            )
+                error="Please fill in all required fields.")
+
+        if len(title) > 150 or len(price) > 100 or len(location) > 200 or len(description) > 5000:
+            return render_template(
+                "edit_listing.html",
+                error="Title, location, price, or description too long.",
+                title="Edit listing",
+                categories=categories,
+                listing=listing)
+
+        new_images = request.files.getlist("images")
+        if existing_image_count + len(new_images) > 20:
+            return render_template(
+                "edit_listing.html",
+                error=f"""Cannot attach more than 20 images in total
+                    (currently {existing_image_count}).""",
+                title="Edit listing",
+                categories=categories,
+                listing=listing)
 
         listings.update_listing(
             listing_id=listing_id,
@@ -283,12 +329,20 @@ def edit_listing(listing_id):
             description=description,
             price=float(price),
             category=category,
-            location=location
-        )
+            location=location)
+
+        for img in new_images:
+            if img.filename != "" and allowed_filetype(img.filename):
+                filename = f"{listing_id}_{secure_filename(img.filename)}"
+                filepath = os.path.join("static/uploads", filename)
+                img.save(filepath)
+                listings.add_listing_image(listing_id, filename)
+
 
         return redirect(url_for("profile", profile_id=session["user_id"]))
 
-    return render_template("edit_listing.html", listing=listing, categories=categories)
+    return render_template("edit_listing.html", listing=listing,
+                           title="Edit listng", categories=categories)
 
 
 @app.route("/delete_listing/<int:listing_id>", methods=["POST"])
