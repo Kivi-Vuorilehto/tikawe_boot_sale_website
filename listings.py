@@ -83,6 +83,13 @@ def create_listing(user_id, title, description, price, category, location, time_
     db.execute(sql, [user_id, title, description, price, category, location, time_stamp])
     return db.last_insert_id()
 
+def update_listing(listing_id, title, description, price, category, location):
+    sql = """
+        UPDATE Listings
+        SET title = ?, description = ?, price = ?, category = ?, location = ?
+        WHERE listing_id = ?
+    """
+    db.execute(sql, [title, description, price, category, location, listing_id])
 
 def delete_listing(listing_id):
     images = get_listing_images(listing_id)

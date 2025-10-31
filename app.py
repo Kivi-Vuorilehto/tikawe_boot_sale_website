@@ -48,10 +48,30 @@ app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 @app.errorhandler(413)
 def too_large(e):
+    if request.path.startswith("/edit_listing"):
+        listing_id = request.path.split("/edit_listing/")[1]
+        return render_template("edit_listing.html",
+                           error="Upload too large (max 20 MB total).",
+                           title="Edit Listing",
+                           listing=listings.get_listing(listing_id),
+                           categories=listings.get_categories()), 413
+
+
     return render_template("create_listing.html",
                            error="Upload too large (max 20 MB total).",
                            title="Create Listing",
                            categories=listings.get_categories()), 413
+
+def format_time(time_string):
+    return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
+
+def allowed_filetype(filename):
+    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png",
+                                                                      "jpg", "jpeg", "gif", "webp"}
+
+@app.template_filter("preserve_newlines")
+def preserve_newlines(data):
+    return Markup("<br>".join(escape(data).split("\n")))
 
 
 @app.route("/login", methods=["GET", "POST"])
@@ -96,18 +116,6 @@ def register():
 def logout():
     del session["user_id"]
     return redirect(url_for("index"))
-
-
-def format_time(time_string):
-    return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
-
-def allowed_filetype(filename):
-    return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png",
-                                                                      "jpg", "jpeg", "gif", "webp"}
-
-@app.template_filter("preserve_newlines")
-def preserve_newlines(data):
-    return Markup("<br>".join(escape(data).split("\n")))
 
 @app.route("/")
 def index():
@@ -238,6 +246,50 @@ def create_listing():
         return redirect(url_for("index"))
 
     return render_template("create_listing.html", title="Create Listing", categories=categories)
+
+@app.route("/edit_listing/<int:listing_id>", methods=["GET", "POST"])
+def edit_listing(listing_id):
+    if "user_id" not in session:
+        return redirect("/login")
+
+    listing = listings.get_listing(listing_id)
+    if not listing:
+        abort(404)
+
+    if listing["user_id"] != session["user_id"]:
+        abort(403)
+
+    categories = listings.get_categories()
+
+    if request.method == "POST":
+        title = request.form.get("title")
+        description = request.form.get("description")
+        price = request.form.get("price")
+        category = int(request.form.get("category"))
+        location = request.form.get("location")
+
+        if not title or not description or not price:
+            return render_template(
+                "edit_listing.html",
+                title="Edit listing",
+                listing=listing,
+                categories=categories,
+                error="Please fill in all required fields."
+            )
+
+        listings.update_listing(
+            listing_id=listing_id,
+            title=title,
+            description=description,
+            price=float(price),
+            category=category,
+            location=location
+        )
+
+        return redirect(url_for("profile", profile_id=session["user_id"]))
+
+    return render_template("edit_listing.html", listing=listing, categories=categories)
+
 
 @app.route("/delete_listing/<int:listing_id>", methods=["POST"])
 def delete_listing(listing_id):
