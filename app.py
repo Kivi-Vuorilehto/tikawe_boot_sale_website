@@ -9,8 +9,8 @@ import users, listings, config
 
 
 app = Flask(__name__)
-app.secret_key = config.secret_key
-app.config["MAX_CONTENT_LENGTH"] = config.max_upload_size
+app.secret_key = config.SECRET_KEY
+app.config["MAX_CONTENT_LENGTH"] = config.MAX_UPLOAD_SIZE
 
 
 @app.after_request
@@ -137,10 +137,10 @@ def index():
     category = request.args.get("category")
     page = int(request.args.get("page", 1))
 
-    offset = (page - 1) * 32 # Num of listings per page
+    offset = (page - 1) * config.MAX_LISTINGS_PER_PAGE
 
     all_listings = listings.get_listings(search=search, sort=sort,
-                                         category=category, limit=32, offset=offset)
+                                         category=category, limit=config.MAX_LISTINGS_PER_PAGE, offset=offset)
     categories = listings.get_categories()
     category_map = {cat["category_id"]: cat["category_name"] for cat in categories}
 
@@ -199,11 +199,11 @@ def profile(profile_id):
     sort = request.args.get("sort")
     category = request.args.get("category")
     page = int(request.args.get("page", 1))
-    offset = (page - 1) * 32
+    offset = (page - 1) * config.MAX_LISTINGS_PER_PAGE
 
     user_listings = listings.get_user_listings(profile_id, search=search,
                                                sort=sort, category=category,
-                                               limit=32, offset=offset)
+                                               limit=config.MAX_LISTINGS_PER_PAGE, offset=offset)
     categories = listings.get_categories()
     category_map = {cat["category_id"]: cat["category_name"] for cat in categories}
 
