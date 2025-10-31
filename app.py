@@ -141,7 +141,11 @@ def logout():
 def index():
     search = request.args.get("search")
     sort = request.args.get("sort")
-    category = request.args.get("category")
+    category_param = request.args.get("category")
+    try:
+        category = int(category_param) if category_param else None
+    except ValueError:
+        category = None
     page = int(request.args.get("page", 1))
 
     offset = (page - 1) * config.MAX_LISTINGS_PER_PAGE
@@ -209,7 +213,11 @@ def profile(profile_id):
 
     search = request.args.get("search")
     sort = request.args.get("sort")
-    category = request.args.get("category")
+    category_param = request.args.get("category")
+    try:
+        category = int(category_param) if category_param else None
+    except ValueError:
+        category = None
     page = int(request.args.get("page", 1))
     offset = (page - 1) * config.MAX_LISTINGS_PER_PAGE
 
@@ -242,7 +250,11 @@ def create_listing():
         title = request.form.get("title")
         description = request.form.get("description")
         price = request.form.get("price")
-        category = int(request.form.get("category"))
+        category_param = request.args.get("category")
+        try:
+            category = int(category_param) if category_param else None
+        except ValueError:
+            category = None
         location = request.form.get("location")
         images = request.files.getlist("images")
 
@@ -308,7 +320,11 @@ def edit_listing(listing_id):
         title = request.form.get("title")
         description = request.form.get("description")
         price = request.form.get("price")
-        category = int(request.form.get("category"))
+        category_param = request.args.get("category")
+        try:
+            category = int(category_param) if category_param else None
+        except ValueError:
+            category = None
         location = request.form.get("location")
 
         if not title or not description or not price:
