@@ -26,7 +26,7 @@
 {% if listings %}
 <div class="listings-container">
     {% for listing in listings %}
-        <a href="{{ url_for('show_listing', listing_id=listing['listing_id']) }}" style="text-decoration: none; color: inherit;">
+        <a href="{{ url_for('show_listing', listing_id=listing['listing_id']) }}">
             <div class="listing-card">
                 {% if listing['images'] and listing['images']|length > 0 %}
                     <img src="{{ url_for('static', filename='uploads/' ~ listing['images'][0]['image_url']) }}" 
