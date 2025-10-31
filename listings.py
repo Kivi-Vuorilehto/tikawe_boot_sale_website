@@ -5,7 +5,11 @@ import db
 IMAGEURL = "static/uploads"
 
 def get_user_listings(user_id, category=None, search=None, sort=None, limit=32, offset=0):
-    sql = "SELECT * FROM Listings WHERE user_id = ? AND status = 1"
+    sql = """
+        SELECT listing_id, user_id, title, description, price, category, 
+               location, time_stamp, status 
+        FROM Listings WHERE user_id = ? AND status = 1
+        """
     params = [user_id]
     if category:
         sql += " AND category = ?"
@@ -30,7 +34,11 @@ def get_user_listings(user_id, category=None, search=None, sort=None, limit=32, 
 
 
 def get_listings(category=None, search=None, sort=None, limit=32, offset=0):
-    sql = "SELECT * FROM Listings WHERE status = 1"
+    sql = """
+        SELECT listing_id, user_id, title, description, price, category, 
+               location, time_stamp, status 
+        FROM Listings WHERE status = 1
+        """
     params = []
 
     if category:
@@ -56,7 +64,11 @@ def get_listings(category=None, search=None, sort=None, limit=32, offset=0):
 
 
 def get_listing(listing_id):
-    sql = "SELECT * FROM Listings WHERE listing_id = ?"
+    sql = """
+        SELECT listing_id, user_id, title, description, price, category, 
+               location, time_stamp, status
+        FROM Listings WHERE listing_id = ?
+    """
     result = db.query(sql, [listing_id])
     return result[0] if result else None
 
@@ -88,7 +100,7 @@ def add_listing_image(listing_id, image_url):
 
 
 def get_listing_images(listing_id):
-    sql = "SELECT * FROM ListingImages WHERE listing_id = ?"
+    sql = "SELECT image_id, listing_id, image_url FROM ListingImages WHERE listing_id = ?"
     return db.query(sql, [listing_id])
 
 
