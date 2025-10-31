@@ -49,7 +49,7 @@ def populate_users(conn):
 def populate_listings(conn):
     cursor = conn.cursor()
     print("Creating listings")
-    
+
     cursor.execute("SELECT user_id FROM Users")
     user_ids = [row["user_id"] for row in cursor.fetchall()]
 
@@ -83,7 +83,7 @@ def populate_listings(conn):
                     INSERT INTO ListingImages (listing_id, image_url)
                     VALUES (?, ?)
                 """, (listing_id, copied_path))
-    
+
     conn.commit()
 
 
@@ -107,7 +107,7 @@ def populate_comments(conn):
             INSERT INTO Comments (listing_id, sender_id, comment_text, time_stamp)
             VALUES (?, ?, ?, ?)
         """, (listing_id, sender_id, comment_text, time_stamp))
-    
+
     conn.commit()
 
 

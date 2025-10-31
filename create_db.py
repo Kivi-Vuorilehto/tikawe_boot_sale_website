@@ -74,14 +74,19 @@ def create_indexes():
     conn = get_connection()
     cursor = conn.cursor()
 
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_listings_user_status_time ON Listings (user_id, status, time_stamp DESC)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_listings_category_status_time ON Listings (category, status, time_stamp DESC)")
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_user_status_time
+                   ON Listings (user_id, status, time_stamp DESC)""")
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_category_status_time
+                   ON Listings (category, status, time_stamp DESC)""")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_listings_price ON Listings (price)")
 
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_listing_images_listing ON ListingImages (listing_id)")
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listing_images_listing
+                   ON ListingImages (listing_id)""")
 
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_comments_listing_time ON Comments (listing_id, time_stamp ASC)")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_comments_sender ON Comments (sender_id)")
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_comments_listing_time
+                   ON Comments (listing_id, time_stamp ASC)""")
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_comments_sender
+                   ON Comments (sender_id)""")
 
     conn.commit()
     conn.close()

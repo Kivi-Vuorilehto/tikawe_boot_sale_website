@@ -32,12 +32,14 @@ def set_secure_headers(response):
 
     return response
 
+
 @app.before_request
 def csrf_protect():
     if request.method == "POST":
         token = session.get('_csrf_token')
         if not token or token != request.form.get('_csrf_token'):
             abort(403)
+
 
 def generate_csrf_token():
     if '_csrf_token' not in session:
@@ -46,8 +48,9 @@ def generate_csrf_token():
 
 app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
+
 @app.errorhandler(413)
-def too_large(e):
+def too_large():
     if request.path.startswith("/edit_listing"):
         listing_id = request.path.split("/edit_listing/")[1]
         return render_template("edit_listing.html",
@@ -56,18 +59,20 @@ def too_large(e):
                            listing=listings.get_listing(listing_id),
                            categories=listings.get_categories()), 413
 
-
     return render_template("create_listing.html",
                            error="Upload too large (max 20 MB total).",
                            title="Create listing",
                            categories=listings.get_categories()), 413
 
+
 def format_time(time_string):
     return datetime.fromisoformat(time_string).strftime("%Y-%m-%d %H:%M")
+
 
 def allowed_filetype(filename):
     return "." in filename and filename.rsplit(".", 1)[1].lower() in {"png",
                                                                       "jpg", "jpeg", "gif", "webp"}
+
 
 @app.template_filter("preserve_newlines")
 def preserve_newlines(data):
@@ -90,10 +95,10 @@ def login():
         if user_id:
             session["user_id"] = user_id
             return redirect(url_for("index"))
-        else:
-            return render_template("login.html", error="Invalid credentials", title="Login")
+        return render_template("login.html", error="Invalid credentials", title="Login")
 
     return render_template("login.html", title="Login")
+
 
 @app.route("/register", methods=["GET", "POST"])
 def register():
@@ -125,10 +130,12 @@ def register():
         return redirect(url_for("login"))
     return render_template("register.html", title="Register")
 
+
 @app.route("/logout")
 def logout():
     del session["user_id"]
     return redirect(url_for("index"))
+
 
 @app.route("/")
 def index():
@@ -140,7 +147,9 @@ def index():
     offset = (page - 1) * config.MAX_LISTINGS_PER_PAGE
 
     all_listings = listings.get_listings(search=search, sort=sort,
-                                         category=category, limit=config.MAX_LISTINGS_PER_PAGE, offset=offset)
+                                         category=category,
+                                         limit=config.MAX_LISTINGS_PER_PAGE,
+                                         offset=offset)
     categories = listings.get_categories()
     category_map = {cat["category_id"]: cat["category_name"] for cat in categories}
 
@@ -155,6 +164,7 @@ def index():
                            selected_sort=sort, selected_category=category,
                            categories=categories, page=page, endpoint="index")
 
+
 @app.route("/listing/<int:listing_id>")
 def show_listing(listing_id):
     listing = listings.get_listing(listing_id)
@@ -168,6 +178,7 @@ def show_listing(listing_id):
     return render_template("listing.html", listing=listing, comments=comments,
                            listing_images=listing_images, users=users,
                            category_name=category_name)
+
 
 @app.route("/listing/<int:listing_id>/comment", methods=["POST"])
 def add_comment(listing_id):
@@ -186,6 +197,7 @@ def add_comment(listing_id):
     )
 
     return redirect(url_for("show_listing", listing_id=listing_id))
+
 
 @app.route("/profile/<int:profile_id>")
 def profile(profile_id):
@@ -218,6 +230,7 @@ def profile(profile_id):
                            listings=listings_with_images, selected_sort=sort,
                            selected_category=category, categories=categories,
                            page=page, endpoint="profile")
+
 
 @app.route("/create_listing", methods=["GET", "POST"])
 def create_listing():
@@ -273,6 +286,7 @@ def create_listing():
         return redirect(url_for("index"))
 
     return render_template("create_listing.html", title="Create listing", categories=categories)
+
 
 @app.route("/edit_listing/<int:listing_id>", methods=["GET", "POST"])
 def edit_listing(listing_id):

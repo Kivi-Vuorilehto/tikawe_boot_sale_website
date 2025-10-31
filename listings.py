@@ -75,7 +75,7 @@ def get_listing(listing_id):
 
 def create_listing(user_id, title, description, price, category, location, time_stamp=None):
     if time_stamp is None:
-        time_stamp = datetime.now(timezone.utc)
+        time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
     sql = """
         INSERT INTO Listings (user_id, title, description, price, category, location, time_stamp)
         VALUES (?, ?, ?, ?, ?, ?, ?)
