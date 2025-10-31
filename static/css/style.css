@@ -225,8 +225,8 @@ button:hover { background: var(--accent-600); }
   text-align: left;
   height: 100%;
   width: 350px;
-  max-height: 550px;
-  min-height: 550px;
+  max-height: 462px;
+  min-height: 462px;
 }
 
 .listing-card:hover {
@@ -279,6 +279,9 @@ button:hover { background: var(--accent-600); }
 .listing-card h3 {
   font-size: 1.05rem;
   margin-top: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .listing-card p {
@@ -288,6 +291,9 @@ button:hover { background: var(--accent-600); }
   line-height: 1.3;
   word-break: break-word;
   overflow-wrap: break-word;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .gallery-container {
