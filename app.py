@@ -244,4 +244,4 @@ def delete_listing(listing_id):
         abort(403)
 
     listings.delete_listing(listing_id)
-    return redirect(url_for("profile"))
+    return redirect(url_for("profile", profile_id=listing["user_id"]))
