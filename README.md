@@ -52,3 +52,9 @@ python3 populate_db.py
 
 
 The server is hosted at localhost:5000 by default.
+
+
+#### Reports
+The large-dataset report exists with the name large-dataset-report.md.
+
+The pylint report exists with the name pylint-report.md.

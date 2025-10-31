@@ -14,7 +14,7 @@ Then we continue operating the website as a normal user and noting down the resu
 1M Comments
 ```
 
-It took approximately 5 minutes to populate the database.
+It took approximately 5 minutes to populate the database. The database file size was 2,21 GB.
 
 The only valuable category in this test was the 'waiting' category and as such all of the following values reference that.
 ```
