@@ -66,8 +66,8 @@ def populate_listings(conn):
         time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
 
         cursor.execute("""
-            INSERT INTO Listings (user_id, title, description, price, category, location, time_stamp, status)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+            INSERT INTO Listings (user_id, title, description, price, category, location, time_stamp)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
         """, (user_id, title, description, price, category, location, time_stamp))
 
         listing_id = cursor.lastrowid

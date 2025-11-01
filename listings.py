@@ -7,8 +7,8 @@ IMAGEURL = "static/uploads"
 def get_user_listings(user_id, category=None, search=None, sort=None, limit=32, offset=0):
     sql = """
         SELECT listing_id, user_id, title, description, price, category, 
-               location, time_stamp, status 
-        FROM Listings WHERE user_id = ? AND status = 1
+               location, time_stamp
+        FROM Listings WHERE user_id = ?
         """
     params = [user_id]
     if category:
@@ -36,8 +36,8 @@ def get_user_listings(user_id, category=None, search=None, sort=None, limit=32, 
 def get_listings(category=None, search=None, sort=None, limit=32, offset=0):
     sql = """
         SELECT listing_id, user_id, title, description, price, category, 
-               location, time_stamp, status 
-        FROM Listings WHERE status = 1
+               location, time_stamp
+        FROM Listings
         """
     params = []
 
@@ -66,7 +66,7 @@ def get_listings(category=None, search=None, sort=None, limit=32, offset=0):
 def get_listing(listing_id):
     sql = """
         SELECT listing_id, user_id, title, description, price, category, 
-               location, time_stamp, status
+               location, time_stamp
         FROM Listings WHERE listing_id = ?
     """
     result = db.query(sql, [listing_id])

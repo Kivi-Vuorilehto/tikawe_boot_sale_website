@@ -18,8 +18,7 @@ CREATE TABLE IF NOT EXISTS Listings (
 	price REAL,
 	category INTEGER REFERENCES ListingCategories (category_id),
 	location TEXT,
-	time_stamp TEXT,
-	status INTEGER DEFAULT 1
+	time_stamp TEXT
 );
 
 CREATE TABLE IF NOT EXISTS ListingImages (
