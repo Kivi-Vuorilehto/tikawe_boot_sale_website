@@ -4,7 +4,7 @@
 <div class="content-wrapper">
     <form method="GET" action="{{ url_for('index') }}" class="search-form">
         <label for="search">Search by text</label>
-        <input type="text" name="search" placeholder="Search by text..." value="{{ request.args.get('search', '') }}">
+        <input type="text" name="search" placeholder="Search by text..." maxlength="150" value="{{ request.args.get('search', '') }}">
 
         <label for="category">Search by category</label>
         <select name="category">

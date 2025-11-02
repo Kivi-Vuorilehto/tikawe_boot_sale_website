@@ -143,6 +143,8 @@ def logout():
 @app.route("/")
 def index():
     search = request.args.get("search")
+    if search:
+        search = search[:150]
     sort = request.args.get("sort")
     category_param = request.args.get("category")
     try:
@@ -215,6 +217,8 @@ def profile(profile_id):
         abort(404)
 
     search = request.args.get("search")
+    if search:
+        search = search[:150]
     sort = request.args.get("sort")
     category_param = request.args.get("category")
     try:
@@ -236,7 +240,7 @@ def profile(profile_id):
         listing_dict["images"] = listings.get_listing_images(listing_dict["listing_id"])
         listing_dict["category_name"] = category_map.get(listing_dict["category"], "Unknown")
         listings_with_images.append(listing_dict)
-    return render_template("profile.html", title="Account", profile_id=profile_id,
+    return render_template("profile.html", title="Profile", profile_id=profile_id,
                            username=username, time_stamp=time_stamp,
                            listings=listings_with_images, selected_sort=sort,
                            selected_category=category, categories=categories,
