@@ -258,7 +258,7 @@ def create_listing():
         except ValueError:
             return render_template("create_listing.html", error="Invalid price value.",
                                    title="Create Listing", categories=categories)
-        category_param = request.args.get("category")
+        category_param = request.form.get("category")
         try:
             category = int(category_param) if category_param else None
         except ValueError:
@@ -272,7 +272,7 @@ def create_listing():
                 error="Please fill in all required fields.",
                 title="Create Listing", categories=categories)
 
-        if len(title) > 150 or len(price) > 100 or len(location) > 200 or len(description) > 5000:
+        if len(title) > 150 or len(price_str) > 20 or len(location) > 200 or len(description) > 5000:
             return render_template(
                 "create_listing.html",
                 error="Title, location, price, or description too long.",
@@ -333,7 +333,7 @@ def edit_listing(listing_id):
         except ValueError:
             return render_template("edit_listing.html", title="Edit listing", listing=listing,
                                    categories=categories, error="Invalid price value.")
-        category_param = request.args.get("category")
+        category_param = request.form.get("category")
         try:
             category = int(category_param) if category_param else None
         except ValueError:
@@ -348,7 +348,7 @@ def edit_listing(listing_id):
                 categories=categories,
                 error="Please fill in all required fields.")
 
-        if len(title) > 150 or len(price) > 100 or len(location) > 200 or len(description) > 5000:
+        if len(title) > 150 or len(price_str) > 20 or len(location) > 200 or len(description) > 5000:
             return render_template(
                 "edit_listing.html",
                 error="Title, location, price, or description too long.",
