@@ -9,8 +9,8 @@ from db import get_connection
 IMAGE_FOLDER = "sample_images"
 UPLOAD_FOLDER = "static/uploads"
 
-IMAGE_PREFIX = "Beagle_"
-IMAGE_COUNT = 100
+IMAGE_PREFIX = "00"
+IMAGE_COUNT = 50
 
 NUM_USERS = 10
 NUM_LISTINGS = 50
@@ -58,11 +58,18 @@ def populate_listings(conn):
 
     for _ in range(NUM_LISTINGS):
         user_id = random.choice(user_ids)
-        title = random_string(30)
-        description = random_string(200)
+        title = "sample title " + _
+        description = """Lorem ipsum dolor sit amet consectetur adipiscing elit. 
+                        Quisque faucibus ex sapien vitae pellentesque sem placerat. 
+                        In id cursus mi pretium tellus duis convallis. 
+                        Tempus leo eu aenean sed diam urna tempor. 
+                        Pulvinar vivamus fringilla lacus nec metus bibendum egestas. 
+                        Iaculis massa nisl malesuada lacinia integer nunc posuere. 
+                        Ut hendrerit semper vel class aptent taciti sociosqu. 
+                        Ad litora torquent per conubia nostra inceptos himenaeos."""
         price = round(random.uniform(10, 1000), 2)
         category = random.choice(categories)
-        location = random_string(20)
+        location = "user " + user_id + "'s yard"
         time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
 
         cursor.execute("""
