@@ -58,7 +58,7 @@ def populate_listings(conn):
 
     for _ in range(NUM_LISTINGS):
         user_id = random.choice(user_ids)
-        title = "sample title " + _
+        title = "sample title " + str(_)
         description = """Lorem ipsum dolor sit amet consectetur adipiscing elit. 
                         Quisque faucibus ex sapien vitae pellentesque sem placerat. 
                         In id cursus mi pretium tellus duis convallis. 
@@ -69,7 +69,7 @@ def populate_listings(conn):
                         Ad litora torquent per conubia nostra inceptos himenaeos."""
         price = round(random.uniform(10, 1000), 2)
         category = random.choice(categories)
-        location = "user " + user_id + "'s yard"
+        location = "user " + str(user_id) + "'s yard"
         time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
 
         cursor.execute("""

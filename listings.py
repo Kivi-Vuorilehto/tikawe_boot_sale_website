@@ -11,12 +11,18 @@ def get_user_listings(user_id, category=None, search=None, sort=None, limit=32, 
         FROM Listings WHERE user_id = ?
         """
     params = [user_id]
+    conditions = []
+
     if category:
-        sql += " AND category = ?"
+        conditions.append("category = ?")
         params.append(category)
+
     if search:
-        sql += " AND (title LIKE ? OR description LIKE ?)"
+        conditions.append("(title LIKE ? OR description LIKE ?)")
         params.extend([f"%{search}%", f"%{search}%"])
+
+    if conditions:
+        sql += " WHERE " + " AND ".join(conditions)
 
     if sort == "time_asc":
         sql += " ORDER BY time_stamp ASC"
@@ -40,13 +46,18 @@ def get_listings(category=None, search=None, sort=None, limit=32, offset=0):
         FROM Listings
         """
     params = []
+    conditions = []
 
     if category:
-        sql += " AND category = ?"
+        conditions.append("category = ?")
         params.append(category)
+
     if search:
-        sql += " AND (title LIKE ? OR description LIKE ?)"
+        conditions.append("(title LIKE ? OR description LIKE ?)")
         params.extend([f"%{search}%", f"%{search}%"])
+
+    if conditions:
+        sql += " WHERE " + " AND ".join(conditions)
 
     if sort == "time_asc":
         sql += " ORDER BY time_stamp ASC"
