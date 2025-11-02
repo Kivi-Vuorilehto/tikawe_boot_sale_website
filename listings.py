@@ -9,20 +9,16 @@ def get_user_listings(user_id, category=None, search=None, sort=None, limit=32, 
         SELECT listing_id, user_id, title, description, price, category, 
                location, time_stamp
         FROM Listings WHERE user_id = ?
-        """
+    """
     params = [user_id]
-    conditions = []
 
     if category:
-        conditions.append("category = ?")
+        sql += " AND category = ?"
         params.append(category)
 
     if search:
-        conditions.append("(title LIKE ? OR description LIKE ?)")
+        sql += " AND (title LIKE ? OR description LIKE ?)"
         params.extend([f"%{search}%", f"%{search}%"])
-
-    if conditions:
-        sql += " WHERE " + " AND ".join(conditions)
 
     if sort == "time_asc":
         sql += " ORDER BY time_stamp ASC"
