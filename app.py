@@ -84,8 +84,8 @@ def preserve_newlines(data):
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = request.form.get("username", "")
+        password = request.form.get("password", "")
 
         if len(username) > 50 or len(password) > 50:
             return render_template(
@@ -105,9 +105,9 @@ def login():
 @app.route("/register", methods=["GET", "POST"])
 def register():
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
-        confirm_password = request.form["confirm_password"]
+        username = request.form.get("username", "")
+        password = request.form.get("password", "")
+        confirm_password = request.form.get("confirm_password", "")
 
         # Include more complex requirements
         if not username or not password:
@@ -191,7 +191,7 @@ def add_comment(listing_id):
     if "user_id" not in session:
         return redirect(url_for("login"))
 
-    comment_text = request.form["comment_text"].strip()
+    comment_text = request.form.get("comment_text", "").strip()
     if not comment_text:
         return redirect(url_for("show_listing", listing_id=listing_id))
 
@@ -374,7 +374,7 @@ def edit_listing(listing_id):
         return redirect(url_for("profile", profile_id=session["user_id"]))
 
     return render_template("edit_listing.html", listing=listing,
-                           title="Edit listng", categories=categories)
+                           title="Edit listing", categories=categories)
 
 
 @app.route("/delete_listing/<int:listing_id>", methods=["POST"])
