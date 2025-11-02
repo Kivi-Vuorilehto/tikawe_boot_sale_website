@@ -272,7 +272,8 @@ def create_listing():
                 error="Please fill in all required fields.",
                 title="Create Listing", categories=categories)
 
-        if len(title) > 150 or len(price_str) > 20 or len(location) > 200 or len(description) > 5000:
+        if (len(title) > 150 or len(price_str) > 20 or len(location) > 200
+            or len(description) > 5000):
             return render_template(
                 "create_listing.html",
                 error="Title, location, price, or description too long.",
@@ -348,7 +349,8 @@ def edit_listing(listing_id):
                 categories=categories,
                 error="Please fill in all required fields.")
 
-        if len(title) > 150 or len(price_str) > 20 or len(location) > 200 or len(description) > 5000:
+        if (len(title) > 150 or len(price_str) > 20 or len(location) > 200
+            or len(description) > 5000):
             return render_template(
                 "edit_listing.html",
                 error="Title, location, price, or description too long.",
