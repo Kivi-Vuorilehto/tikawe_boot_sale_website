@@ -53,18 +53,19 @@ app.jinja_env.globals['csrf_token'] = generate_csrf_token
 
 @app.errorhandler(413)
 def too_large():
-    if request.path.startswith("/edit_listing"):
-        listing_id = request.path.split("/edit_listing/")[1]
-        return render_template("edit_listing.html",
-                           error="Upload too large (max 20 MB total).",
-                           title="Edit listing",
-                           listing=listings.get_listing(listing_id),
-                           categories=listings.get_categories()), 413
+    context = {
+        "error": "Upload too large (max 20 MB total).",
+        "categories": listings.get_categories()}
 
-    return render_template("create_listing.html",
-                           error="Upload too large (max 20 MB total).",
-                           title="Create listing",
-                           categories=listings.get_categories()), 413
+    if request.path.startswith("/edit_listing/"):
+        listing_id = request.path.split("/edit_listing/")[1]
+        context.update({
+            "title": "Edit listing",
+            "listing": listings.get_listing(listing_id)})
+        return render_template("edit_listing.html", **context), 413
+
+    context["title"] = "Create listing"
+    return render_template("create_listing.html", **context), 413
 
 
 def format_time(time_string):
@@ -249,18 +250,23 @@ def create_listing():
     categories = listings.get_categories()
 
     if request.method == "POST":
-        title = request.form.get("title")
-        description = request.form.get("description")
-        price = request.form.get("price")
+        title = request.form.get("title", "").strip()
+        description = request.form.get("description", "").strip()
+        price_str = request.form.get("price", "").strip()
+        try:
+            price = float(price_str)
+        except ValueError:
+            return render_template("create_listing.html", error="Invalid price value.",
+                                   title="Create Listing", categories=categories)
         category_param = request.args.get("category")
         try:
             category = int(category_param) if category_param else None
         except ValueError:
             category = None
-        location = request.form.get("location")
+        location = request.form.get("location", "").strip()
         images = request.files.getlist("images")
 
-        if not title or not description or not price:
+        if not title or not description or not price_str:
             return render_template(
                 "create_listing.html",
                 error="Please fill in all required fields.",
@@ -285,7 +291,7 @@ def create_listing():
             user_id=session["user_id"],
             title=title,
             description=description,
-            price=float(price),
+            price=price,
             category=category,
             location=location,
             time_stamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"))
@@ -319,15 +325,20 @@ def edit_listing(listing_id):
     existing_image_count = len(existing_images)
 
     if request.method == "POST":
-        title = request.form.get("title")
-        description = request.form.get("description")
-        price = request.form.get("price")
+        title = request.form.get("title", "").strip()
+        description = request.form.get("description", "").strip()
+        price_str = request.form.get("price", "").strip()
+        try:
+            price = float(price_str)
+        except ValueError:
+            return render_template("edit_listing.html", title="Edit listing", listing=listing,
+                                   categories=categories, error="Invalid price value.")
         category_param = request.args.get("category")
         try:
             category = int(category_param) if category_param else None
         except ValueError:
             category = None
-        location = request.form.get("location")
+        location = request.form.get("location", "").strip()
 
         if not title or not description or not price:
             return render_template(
