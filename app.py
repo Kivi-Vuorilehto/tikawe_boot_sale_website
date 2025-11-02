@@ -24,10 +24,12 @@ def set_secure_headers(response):
 
     csp = (
         "default-src 'self'; "
-        "img-src 'self' data:; "
+        "img-src 'self' data: blob:; "
         "script-src 'self'; "
-        "style-src 'self' 'unsafe-inline';"
-    )
+        "style-src 'self' 'unsafe-inline'; "
+        "object-src 'none'; "
+        "base-uri 'self'; "
+        "frame-ancestors 'none';")
     response.headers['Content-Security-Policy'] = csp
 
     return response
@@ -133,7 +135,7 @@ def register():
 
 @app.route("/logout")
 def logout():
-    del session["user_id"]
+    session.pop("user_id", None)
     return redirect(url_for("index"))
 
 
