@@ -8,7 +8,7 @@ A user can register an account and log in to the site.
 A user can post a listing on the feed which contains images, a title, a description, a category, a price and a location. 
 A feed displays all added listings to all visitors.
 
-A user can filter the feed by category and title.
+A user can filter the feed by category and text content.
 A user can sort the feed by price and time.
 
 Comments can also be left on listings with futher questions to the seller.
