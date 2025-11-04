@@ -73,17 +73,25 @@ def create_indexes():
     conn = get_connection()
     cursor = conn.cursor()
 
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_time
+                   ON Listings(time_stamp);""")
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_user_time
-                   ON Listings (user_id, time_stamp DESC);""")
+                   ON Listings (user_id, time_stamp);""")
+
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_category_time
-                   ON Listings (category, time_stamp DESC);""")
-    cursor.execute("CREATE INDEX IF NOT EXISTS idx_listings_price ON Listings (price);")
+                   ON Listings (category, time_stamp);""")
+
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_price
+                   ON Listings (price);""")
+
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_title_desc
+                   ON Listings (title, description);""")
 
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listing_images_listing
                    ON ListingImages (listing_id);""")
 
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_comments_listing_time
-                   ON Comments (listing_id, time_stamp ASC);""")
+                   ON Comments (listing_id, time_stamp);""")
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_comments_sender
                    ON Comments (sender_id);""")
 

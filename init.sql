@@ -11,10 +11,11 @@ INSERT OR IGNORE INTO ListingCategories (category_name) VALUES
         ('Collectibles'),
         ('Other');
 
-
-CREATE INDEX IF NOT EXISTS idx_listings_user_time ON Listings (user_id, time_stamp DESC);
-CREATE INDEX IF NOT EXISTS idx_listings_category_time ON Listings (category, time_stamp DESC);
+CREATE INDEX IF NOT EXISTS idx_listings_time ON Listings(time_stamp);
+CREATE INDEX IF NOT EXISTS idx_listings_user_time ON Listings (user_id, time_stamp);
+CREATE INDEX IF NOT EXISTS idx_listings_category_time ON Listings (category, time_stamp);
 CREATE INDEX IF NOT EXISTS idx_listings_price ON Listings (price);
+CREATE INDEX IF NOT EXISTS idx_listings_title_desc ON Listings (title, description);
 
 CREATE INDEX IF NOT EXISTS idx_listing_images_listing ON ListingImages (listing_id);
 

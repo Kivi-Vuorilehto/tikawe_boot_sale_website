@@ -74,24 +74,35 @@ Then we continue operating the website as a normal user and noting down the resu
 1M Comments
 ```
 
-It took approximately 5 minutes to populate the database. The database file size was 2,21 GB.
+It took approximately 5 minutes to populate the database. The database file size was 4.624 GB.
 
 The only valuable category in this test was the 'waiting' category and as such all of the following values reference that.
 ```
-GET INDEX:                                                                          1300ms
-POST REGISTER:                                                                      123ms
-GET LOGIN:                                                                          12ms
-POST LOGIN                                                                          123ms
-GET INDEX                                                                           1270ms
-GET LISTING(ID)                                                                     0ms
-GET PROFILE(ID):                                                                    11ms
-GET SEARCH BY TITLE and DESC "test":                                                2380ms
-GET SORT OLDEST FIRST:                                                              1280ms
-GET SORT CATEGORY "BOOKS":                                                          14ms
-GET SORT CATEGORY "BOOKS", SORT PRICE LOW TO HIGH:                                  156ms
-GET SEARCH BY TITLE and DESC "test", SORT CATEGORY "BOOKS", SORT PRICE LOW TO HIGH: 259ms
+GET INDEX:                                                                          30ms
+GET REGISTER:                                                                       18ms
+POST REGISTER:                                                                      130ms
+GET LOGIN:                                                                          10ms
+POST LOGIN                                                                          115ms
+GET INDEX                                                                           11ms
+GET LISTING(ID)                                                                     21ms
+GET PROFILE(ID):                                                                    26ms
+GET CREATE_LISTING:                                                                 11ms
+POST CREATE_LISTING:                                                                21ms
+```
+All following on index:
+```
+GET (DEFAULT SORT (NEWEST FIRST)):                                                  13ms
+GET SORT OLDEST FIRST:                                                              11ms
+GET SORT BY PRICE ASC:                                                              13ms
+GET SORT BY PRICE DESC:                                                             13ms
+
+GET SEARCH BY TITLE and DESC "test" SORT BY NEWEST FIRST:                           46ms
+GET SEARCH BY TITLE and DESC "test" SORT BY OLDEST FIRST:                           46ms
+GET SEARCH BY TITLE and DESC "test" SORT BY PRICE ASC:                              57ms
+
+GET SEARCH BY TITLE and DESC "test" CATEGORY BOOKS SORT BY OLDEST FIRST:            60ms
+GET SEARCH BY TITLE and DESC "test" CATEGORY BOOKS SORT BY PRICE ASC:               279ms
 ```
 
-From this we can conclude that operations which do not have indexes, like filtering using the LIKE operator are much slower than the operations utilizing indexes like using the category.
 
-We can also conclude that the application would perform acceptably at low-size operation, but would significantly struggle even at these tested mid-size numbers. This is because 50 thumbnails would be loaded per page and there would be more than a single concurrent user.
+We can conclude that the application would perform acceptably at low-size operation, but would struggle even at mid-size numbers. This is because 50 thumbnails would be loaded per page and there would be more than a single concurrent user. Additionally the a new database connection is opened every time data is inserted which is slow. Requests could be pooled to preserve performance at higher user numbers.
