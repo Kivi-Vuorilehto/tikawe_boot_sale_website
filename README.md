@@ -78,30 +78,30 @@ It took approximately 5 minutes to populate the database. The database file size
 
 The only valuable category in this test was the 'waiting' category and as such all of the following values reference that.
 ```
-GET INDEX:                                                                          30ms
-GET REGISTER:                                                                       18ms
-POST REGISTER:                                                                      130ms
-GET LOGIN:                                                                          10ms
-POST LOGIN                                                                          115ms
-GET INDEX                                                                           11ms
-GET LISTING(ID)                                                                     21ms
-GET PROFILE(ID):                                                                    26ms
-GET CREATE_LISTING:                                                                 11ms
-POST CREATE_LISTING:                                                                21ms
+GET INDEX:                                                                30ms
+GET REGISTER:                                                             18ms
+POST REGISTER:                                                            130ms
+GET LOGIN:                                                                10ms
+POST LOGIN                                                                115ms
+GET INDEX                                                                 11ms
+GET LISTING(ID)                                                           21ms
+GET PROFILE(ID):                                                          26ms
+GET CREATE_LISTING:                                                       11ms
+POST CREATE_LISTING:                                                      21ms
 ```
 All following on index:
 ```
-GET (DEFAULT SORT (NEWEST FIRST)):                                                  13ms
-GET SORT OLDEST FIRST:                                                              11ms
-GET SORT BY PRICE ASC:                                                              13ms
-GET SORT BY PRICE DESC:                                                             13ms
+GET (DEFAULT SORT (NEWEST FIRST)):                                        13ms
+GET SORT OLDEST FIRST:                                                    11ms
+GET SORT BY PRICE ASC:                                                    13ms
+GET SORT BY PRICE DESC:                                                   13ms
 
-GET SEARCH BY TITLE and DESC "test" SORT BY NEWEST FIRST:                           46ms
-GET SEARCH BY TITLE and DESC "test" SORT BY OLDEST FIRST:                           46ms
-GET SEARCH BY TITLE and DESC "test" SORT BY PRICE ASC:                              57ms
+GET SEARCH BY TITLE and DESC "test" SORT BY NEWEST FIRST:                 46ms
+GET SEARCH BY TITLE and DESC "test" SORT BY OLDEST FIRST:                 46ms
+GET SEARCH BY TITLE and DESC "test" SORT BY PRICE ASC:                    57ms
 
-GET SEARCH BY TITLE and DESC "test" CATEGORY BOOKS SORT BY OLDEST FIRST:            60ms
-GET SEARCH BY TITLE and DESC "test" CATEGORY BOOKS SORT BY PRICE ASC:               279ms
+GET SEARCH BY TITLE and DESC "test" CATEGORY BOOKS SORT BY OLDEST FIRST:  60ms
+GET SEARCH BY TITLE and DESC "test" CATEGORY BOOKS SORT BY PRICE ASC:     279ms
 ```
 
 
