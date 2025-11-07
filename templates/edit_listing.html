@@ -15,7 +15,7 @@
         <input type="text" name="title" id="title" maxlength="150" value="{{ listing['title'] }}" required><br><br>
 
         <label for="description">Description:</label><br>
-        <textarea name="description" id="description" rows="4" maxlength="5000" required>{{ listing['description'] | preserve_newlines }}</textarea><br><br>
+        <textarea name="description" id="description" rows="4" maxlength="5000" required>{{ listing['description'] }}</textarea><br><br>
 
         <label for="price">Price ($):</label><br>
         <input type="number" step="0.01" name="price" id="price" maxlength="20" value="{{ listing['price'] }}" required><br><br>

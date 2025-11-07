@@ -329,6 +329,11 @@ def edit_listing(listing_id):
     existing_images = listings.get_listing_images(listing_id)
     existing_image_count = len(existing_images)
 
+    listing_desc = listing['description'] or ""
+    listing_desc = listing_desc.replace('<br>', '\n')
+    listing = dict(listing)
+    listing['description'] = listing_desc
+
     if request.method == "POST":
         title = request.form.get("title", "").strip()
         description = request.form.get("description", "").strip()
