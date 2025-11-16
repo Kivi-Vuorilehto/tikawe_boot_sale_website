@@ -4,6 +4,8 @@
 <div class="gallery-container">
     <h2>Profile: {{ username }}</h2>
     <p><strong>Account Created:</strong> {{ time_stamp }}</p>
+    <p><strong>Current listings:</strong> {{ listings_count }}</p>
+    <p><strong>Current comments:</strong> {{ comment_count }}</p>
 
     {% if session.get("user_id") == profile_id %}
         <a href="{{ url_for('create_listing') }}" class="btn">Create New Listing</a>

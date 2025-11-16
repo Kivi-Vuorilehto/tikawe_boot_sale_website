@@ -140,3 +140,11 @@ def get_comments(listing_id):
 def get_categories():
     sql = "SELECT category_id, category_name FROM ListingCategories ORDER BY category_name ASC"
     return db.query(sql)
+
+def count_total_listings(user_id):
+    sql = "SELECT COUNT(*) AS count FROM Listings WHERE user_id = ?"
+    return db.query(sql, [user_id])[0]["count"]
+
+def count_user_comments(user_id):
+    sql = "SELECT COUNT(*) AS count FROM Comments WHERE sender_id = ?"
+    return db.query(sql, [user_id])[0]["count"]

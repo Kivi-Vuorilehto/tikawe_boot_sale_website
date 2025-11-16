@@ -77,6 +77,8 @@ def create_indexes():
                    ON Listings(time_stamp);""")
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_user_time
                    ON Listings (user_id, time_stamp);""")
+    cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_user
+                   ON Listings(user_id);""")
 
     cursor.execute("""CREATE INDEX IF NOT EXISTS idx_listings_category_time
                    ON Listings (category, time_stamp);""")

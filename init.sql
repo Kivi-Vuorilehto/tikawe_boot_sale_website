@@ -12,6 +12,7 @@ INSERT OR IGNORE INTO ListingCategories (category_name) VALUES
         ('Other');
 
 CREATE INDEX IF NOT EXISTS idx_listings_time ON Listings(time_stamp);
+CREATE INDEX IF NOT EXISTS idx_listings_user ON Listings(user_id);
 CREATE INDEX IF NOT EXISTS idx_listings_user_time ON Listings (user_id, time_stamp);
 CREATE INDEX IF NOT EXISTS idx_listings_category_time ON Listings (category, time_stamp);
 CREATE INDEX IF NOT EXISTS idx_listings_price ON Listings (price);

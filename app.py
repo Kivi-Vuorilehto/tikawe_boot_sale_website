@@ -216,6 +216,9 @@ def profile(profile_id):
     if username is None:
         abort(404)
 
+    listings_count = listings.count_total_listings(profile_id)
+    comment_count = listings.count_user_comments(profile_id)
+
     search = request.args.get("search")
     if search:
         search = search[:150]
@@ -244,7 +247,8 @@ def profile(profile_id):
                            username=username, time_stamp=time_stamp,
                            listings=listings_with_images, selected_sort=sort,
                            selected_category=category, categories=categories,
-                           page=page, endpoint="profile")
+                           page=page, endpoint="profile", listings_count=listings_count,
+                           comment_count=comment_count)
 
 
 @app.route("/create_listing", methods=["GET", "POST"])
