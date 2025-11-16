@@ -82,9 +82,9 @@ GET INDEX:                                                                30ms
 GET REGISTER:                                                             18ms
 POST REGISTER:                                                            130ms
 GET LOGIN:                                                                10ms
-POST LOGIN                                                                115ms
-GET INDEX                                                                 11ms
-GET LISTING(ID)                                                           21ms
+POST LOGIN:                                                               115ms
+GET INDEX:                                                                11ms
+GET LISTING(ID):                                                          21ms
 GET PROFILE(ID):                                                          26ms
 GET CREATE_LISTING:                                                       11ms
 POST CREATE_LISTING:                                                      21ms
