@@ -2,7 +2,7 @@ import os
 import secrets
 from datetime import datetime, timezone
 from flask import Flask
-from flask import render_template, redirect, request, session, url_for, abort
+from flask import render_template, redirect, request, session, url_for, abort, flash
 from werkzeug.utils import secure_filename
 from markupsafe import Markup, escape
 import users, listings, config
@@ -111,7 +111,7 @@ def register():
         confirm_password = request.form.get("confirm_password", "")
 
         # Include more complex requirements
-        if not username or not password:
+        if not username or not password or not confirm_password:
             return render_template("register.html", error="Please fill in all fields,",
                                    title="Register")
 
@@ -130,6 +130,7 @@ def register():
 
         time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
         users.create_user(username, password, time_stamp)
+        flash("Account created successfully.")
         return redirect(url_for("login"))
     return render_template("register.html", title="Register")
 

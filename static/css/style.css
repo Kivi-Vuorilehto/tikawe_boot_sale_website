@@ -26,6 +26,9 @@ a:hover {
     color: var(--accent-600); 
     text-decoration: underline; 
 }
+p {
+    margin-top: 4px;
+}
 
 
 html, body {
@@ -418,6 +421,14 @@ button:hover {
     font-weight: 700; 
     margin: 8px 0; 
     text-align:center; 
+}
+
+.success { 
+    color: var(--accent); 
+    font-weight: 700; 
+    margin: 8px 0; 
+    text-align:center; 
+    margin: 2px;
 }
 
 .empty-message {
