@@ -57,17 +57,18 @@ python3 populate_db.py
 The server is hosted at localhost:5000 by default.
 
 ### Generic non-comprehensive manual test procedure
+#### Setup
 - Run create_db.py
 - Run populate_db.py
 - Start the server
-
+#### Index
 - Navigate to localhost:5000
 - Observe listings, categories, thumbnails
 - Test categories as a filter
 - Test a different sorting mode
 - Test text search
 - Test pagination
-
+#### Register and login
 - Navigate to /register
 - Enter valid registration details
 - Submit and verify success message
@@ -77,7 +78,7 @@ The server is hosted at localhost:5000 by default.
 
 - Test duplicate username, empty field and non-matching password error messages
 - Test invalid login credentials and empty field error messages
-
+#### Create and edit listing
 - Login and navigate to /create_listing
 - Test listing creation with images > 20
 - Verify error message
@@ -94,9 +95,11 @@ The server is hosted at localhost:5000 by default.
 
 - Create comment with newlines on listing
 - Verify comment and newlines
-
+  
+#### Profile
 - Navigate to /profile and verify statistics of 1 current listing and 1 current comment
 
+#### Listing deletion
 - Navigate to made listing and delete listing
 - Verify listing deletion
 
