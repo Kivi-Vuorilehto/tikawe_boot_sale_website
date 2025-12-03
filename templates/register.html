@@ -11,7 +11,11 @@
     <form method="POST" action="{{ url_for('register') }}">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
         <label for="username">Username</label>
-        <input type="text" name="username" id="username" placeholder="Enter username" maxlength="50" required><br>
+        {% if username %}
+            <input type="text" name="username" id="username" value="{{ username }}" maxlength="50" required><br>
+        {% else %}
+            <input type="text" name="username" id="username" placeholder="Enter username" maxlength="50" required><br>
+        {% endif %}
 
         <label for="password">Password</label>
         <input type="password" name="password" id="password" placeholder="Enter password" maxlength="50" required><br>

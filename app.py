@@ -98,7 +98,8 @@ def login():
         if user_id:
             session["user_id"] = user_id
             return redirect(url_for("index"))
-        return render_template("login.html", error="Invalid credentials", title="Login")
+        return render_template("login.html", error="Invalid credentials",
+                               title="Login", username=username)
 
     return render_template("login.html", title="Login")
 
@@ -123,10 +124,10 @@ def register():
 
         if users.username_exists(username):
             return render_template("register.html", error="Username already taken.",
-                                   title="Register")
+                                   title="Register", username=username)
         if password != confirm_password:
             return render_template("register.html", error="Passwords must match.",
-                                   title="Register")
+                                   title="Register", username=username)
 
         time_stamp = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
         users.create_user(username, password, time_stamp)

@@ -19,8 +19,12 @@
     <form action="{{ url_for('login') }}" method="POST">
         <input type="hidden" name="_csrf_token" value="{{ csrf_token() }}">
         <label for="username">Username</label>
-        <input type="text" id="username" name="username" placeholder="Enter username" maxlength="50" required><br>
-
+        {% if username %}
+            <input type="text" id="username" name="username" value="{{ username }}" maxlength="50" required><br>
+        {% else %}
+            <input type="text" id="username" name="username" placeholder="Enter username" maxlength="50" required><br>
+        {% endif %}
+        
         <label for="password">Password</label>
         <input type="password" id="password" name="password" placeholder="Enter password" maxlength="50" required><br>
 
