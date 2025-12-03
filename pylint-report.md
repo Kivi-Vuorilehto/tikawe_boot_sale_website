@@ -1,8 +1,7 @@
 # Pylint report
 Pylint gives the following report from the app:
 
-```
-************* Module app
+```************* Module app
 app.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 app.py:8:0: C0410: Multiple imports on one line (users, listings, config) (multiple-imports)
 app.py:17:0: C0116: Missing function or method docstring (missing-function-docstring)
@@ -13,18 +12,19 @@ app.py:71:0: C0116: Missing function or method docstring (missing-function-docst
 app.py:75:0: C0116: Missing function or method docstring (missing-function-docstring)
 app.py:81:0: C0116: Missing function or method docstring (missing-function-docstring)
 app.py:86:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:107:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:138:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:144:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:176:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:191:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:210:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:247:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:247:0: R0911: Too many return statements (7/6) (too-many-return-statements)
-app.py:313:0: C0116: Missing function or method docstring (missing-function-docstring)
-app.py:313:0: R0914: Too many local variables (16/15) (too-many-locals)
-app.py:313:0: R0911: Too many return statements (7/6) (too-many-return-statements)
-app.py:394:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:108:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:140:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:146:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:180:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:195:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:214:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:214:0: R0914: Too many local variables (17/15) (too-many-locals)
+app.py:257:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:257:0: R0911: Too many return statements (7/6) (too-many-return-statements)
+app.py:323:0: C0116: Missing function or method docstring (missing-function-docstring)
+app.py:323:0: R0914: Too many local variables (17/15) (too-many-locals)
+app.py:323:0: R0911: Too many return statements (7/6) (too-many-return-statements)
+app.py:409:0: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module config
 config.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 ************* Module db
@@ -40,20 +40,22 @@ listings.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 listings.py:7:0: C0116: Missing function or method docstring (missing-function-docstring)
 listings.py:7:0: R0913: Too many arguments (6/5) (too-many-arguments)
 listings.py:7:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
-listings.py:42:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:77:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:87:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:87:0: R0913: Too many arguments (7/5) (too-many-arguments)
-listings.py:87:0: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
-listings.py:97:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:97:0: R0913: Too many arguments (6/5) (too-many-arguments)
-listings.py:97:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
-listings.py:105:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:115:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:120:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:125:0: C0116: Missing function or method docstring (missing-function-docstring)
-listings.py:134:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:38:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:73:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:83:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:83:0: R0913: Too many arguments (7/5) (too-many-arguments)
+listings.py:83:0: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
+listings.py:93:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:93:0: R0913: Too many arguments (6/5) (too-many-arguments)
+listings.py:93:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+listings.py:101:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:111:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:116:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:121:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:130:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:140:0: C0116: Missing function or method docstring (missing-function-docstring)
 listings.py:144:0: C0116: Missing function or method docstring (missing-function-docstring)
+listings.py:148:0: C0116: Missing function or method docstring (missing-function-docstring)
 ************* Module users
 users.py:1:0: C0114: Missing module docstring (missing-module-docstring)
 users.py:4:0: C0116: Missing function or method docstring (missing-function-docstring)
@@ -62,7 +64,7 @@ users.py:14:0: C0116: Missing function or method docstring (missing-function-doc
 users.py:25:0: C0116: Missing function or method docstring (missing-function-docstring)
 
 ------------------------------------------------------------------
-Your code has been rated at 8.52/10 (previous run: 8.49/10, +0.03)
+Your code has been rated at 8.49/10 (previous run: 8.52/10, -0.02)
 ```
 
 
@@ -80,15 +82,16 @@ This was a conscious decision as these are all of my first party imports in this
 
 ## Too many return statements
 ```
-app.py:247:0: R0911: Too many return statements (7/6) (too-many-return-statements)
-app.py:313:0: R0911: Too many return statements (7/6) (too-many-return-statements)
+app.py:257:0: R0911: Too many return statements (7/6) (too-many-return-statements)
+app.py:323:0: R0911: Too many return statements (7/6) (too-many-return-statements)
 ```
 
 This alert is due to me doing error handling within the function, instead of separating it into its own helper function. I decided to do it this way because the project is still small in size.
 
 ## Too many local variables
 ```
-app.py:313:0: R0914: Too many local variables (16/15) (too-many-locals)
+app.py:214:0: R0914: Too many local variables (17/15) (too-many-locals)
+app.py:323:0: R0914: Too many local variables (17/15) (too-many-locals)
 ```
 
 I decided to assign 16 values as local variables as it improves readability.
@@ -105,10 +108,10 @@ Pylint flags some database operation functions as having too many arguments:
 ```
 listings.py:7:0: R0913: Too many arguments (6/5) (too-many-arguments)
 listings.py:7:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
-listings.py:87:0: R0913: Too many arguments (7/5) (too-many-arguments)
-listings.py:87:0: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
-listings.py:97:0: R0913: Too many arguments (6/5) (too-many-arguments)
-listings.py:97:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
+listings.py:83:0: R0913: Too many arguments (7/5) (too-many-arguments)
+listings.py:83:0: R0917: Too many positional arguments (7/5) (too-many-positional-arguments)
+listings.py:93:0: R0913: Too many arguments (6/5) (too-many-arguments)
+listings.py:93:0: R0917: Too many positional arguments (6/5) (too-many-positional-arguments)
 ```
 
 An example of one of the flagged functions:
@@ -124,4 +127,4 @@ def create_listing(user_id, title, description, price, category, location, time_
     return db.last_insert_id()
 ```
 
-In this case it is simply unavoidable due to the design of the tables in the database. I could create separate databases linked by a common user_id to avoid this but in my opinion that becomes much more harmful than having too many arguments due to increasing the complexity of the database design.
+In this case it is simply unavoidable due to the design of the tables in the database. I could pass in a single array with the values to circumvent this but I believe that would add negative value to readability. I could create separate databases linked by a common user_id to avoid this but in my opinion that becomes much more harmful than having too many arguments due to increasing the complexity of the database design.
