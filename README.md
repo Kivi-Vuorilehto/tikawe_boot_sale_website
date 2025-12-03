@@ -2,19 +2,22 @@ A small website created to pass a basics of web-development and databases course
 
 ### Description
 The website is designed to host listings for boot sales, garage sales or yard sales. 
-A user can put up individual items and have a common location to their sale location.
+A logged-in user can put up individual items and have a common location to their sale location.
 
-A user can register an account and log in to the site.
-A user can post a listing on the feed which contains images, a title, a description, a category, a price and a location. 
-A feed displays all added listings to all visitors.
+#### Basic functionality
 
-A user can filter the feed by category and text content.
-A user can sort the feed by price and time.
+- Any user can view all listings on the index page and more specific information on the listing page.
+- Any user can filter the index by category and text content.
+- Any user can sort the index by price and time.
 
-Comments can also be left on listings with futher questions to the seller.
+- The user can register an account and log in to the site.
+- The user can post a listing on the index which contains images, a title, a description, a category, a price and a location. 
 
-Each user has a profile in which all their listings are displayed. From here they can easily navigate to a listing and remove it if it is not revelant anymore. This is also filter-able to aid users with a large number of listings.
+- Comments can also be left by logged-in users on listings with futher questions to the seller.
 
+- Each registered user has a profile page in which all their listings are displayed. 
+- From here they can easily navigate to a listing and remove or edit it if it is not revelant anymore. 
+- The profile page is filterable and sortable in the same way as the index.
 
 
 ### Setup
@@ -51,8 +54,51 @@ If you wish to populate the database with sample random data then run:
 python3 populate_db.py
 ```
 
-
 The server is hosted at localhost:5000 by default.
+
+### Generic non-comprehensive manual test procedure
+- Run create_db.py
+- Run populate_db.py
+- Start the server
+
+- Navigate to localhost:5000
+- Observe listings, categories, thumbnails
+- Test categories as a filter
+- Test a different sorting mode
+- Test text search
+- Test pagination
+
+- Navigate to /register
+- Enter valid registration details
+- Submit and verify success message
+- Test login with valid credentials
+
+- Test /logout
+
+- Test duplicate username, empty field and non-matching password error messages
+- Test invalid login credentials and empty field error messages
+
+- Login and navigate to /create_listing
+- Test listing creation with images > 20
+- Verify error message
+
+- Test listing creation with valid input which contains 1 < images < 20
+- Verify appearance on index and /profile/id
+
+- Click on the created listing to enter /listing/id
+- Test image carousel
+- Edit listing and modify description to contain newlines and add one image to listing, save listing
+- Verify newlines in description and new image appearance
+
+- Edit listing and add 20 images, verify error message
+
+- Create comment with newlines on listing
+- Verify comment and newlines
+
+- Navigate to /profile and verify statistics of 1 current listing and 1 current comment
+
+- Navigate to made listing and delete listing
+- Verify listing deletion
 
 
 # Reports
