@@ -61,6 +61,7 @@ The server is hosted at localhost:5000 by default.
 - Run create_db.py
 - Run populate_db.py
 - Start the server
+  
 #### Index
 - Navigate to localhost:5000
 - Observe listings, categories, thumbnails
@@ -68,31 +69,27 @@ The server is hosted at localhost:5000 by default.
 - Test a different sorting mode
 - Test text search
 - Test pagination
+  
 #### Register and login
 - Navigate to /register
 - Enter valid registration details
 - Submit and verify success message
 - Test login with valid credentials
-
 - Test /logout
-
 - Test duplicate username, empty field and non-matching password error messages
 - Test invalid login credentials and empty field error messages
+  
 #### Create and edit listing
 - Login and navigate to /create_listing
 - Test listing creation with images > 20
 - Verify error message
-
 - Test listing creation with valid input which contains 1 < images < 20
 - Verify appearance on index and /profile/id
-
 - Click on the created listing to enter /listing/id
 - Test image carousel
 - Edit listing and modify description to contain newlines and add one image to listing, save listing
 - Verify newlines in description and new image appearance
-
 - Edit listing and add 20 images, verify error message
-
 - Create comment with newlines on listing
 - Verify comment and newlines
   
