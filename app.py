@@ -297,6 +297,14 @@ def create_listing():
                 error="Cannot attach more than 20 images in total.",
                 title="Create listing",
                 categories=categories)
+        
+        for img in new_images:
+            if not allowed_filetype(img.filename):
+                return render_template(
+                "create_listing.html",
+                error="Invalid filetype. Expected png, jpg, jpeg, gif or webp.",
+                title="Create listing",
+                categories=categories)
 
         listing_id = listings.create_listing(
             user_id=session["user_id"],
@@ -307,12 +315,10 @@ def create_listing():
             location=location,
             time_stamp=datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"))
 
-        for img in images:
-            if img.filename != "" and allowed_filetype(img.filename):
-                filename = f"{listing_id}_{secure_filename(img.filename)}"
-                filepath = os.path.join("static/uploads", filename)
-                img.save(filepath)
-                listings.add_listing_image(listing_id, filename)
+        filename = f"{listing_id}_{secure_filename(img.filename)}"
+        filepath = os.path.join("static/uploads", filename)
+        img.save(filepath)
+        listings.add_listing_image(listing_id, filename)
 
         return redirect(url_for("index"))
 
@@ -382,6 +388,15 @@ def edit_listing(listing_id):
                 title="Edit listing",
                 categories=categories,
                 listing=listing)
+        
+        for img in new_images:
+            if not allowed_filetype(img.filename):
+                return render_template(
+                "edit_listing.html",
+                error="Invalid filetype. Expected png, jpg, jpeg, gif or webp.",
+                title="Edit listing",
+                categories=categories,
+                listing=listing)
 
         listings.update_listing(
             listing_id=listing_id,
@@ -391,12 +406,10 @@ def edit_listing(listing_id):
             category=category,
             location=location)
 
-        for img in new_images:
-            if img.filename != "" and allowed_filetype(img.filename):
-                filename = f"{listing_id}_{secure_filename(img.filename)}"
-                filepath = os.path.join("static/uploads", filename)
-                img.save(filepath)
-                listings.add_listing_image(listing_id, filename)
+        filename = f"{listing_id}_{secure_filename(img.filename)}"
+        filepath = os.path.join("static/uploads", filename)
+        img.save(filepath)
+        listings.add_listing_image(listing_id, filename)
 
 
         return redirect(url_for("profile", profile_id=session["user_id"]))
